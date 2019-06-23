@@ -1,3 +1,166 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from blog.models import Article, Tag, Category
+from config.models import SideBar
+from django.views.generic import DetailView, ListView
 
-# Create your views here.
+"""  这两个视图函数没有使用，可用于参考和与类视图对比
+def article_list(request, category_id=None, tag_id=None):
+    tag = None
+    category = None
+
+    if tag_id:
+        article_ls, tag = Article.get_by_tag(tag_id)
+    elif category_id:
+        article_ls, category = Article.get_by_category(category_id)
+    else:
+        article_ls = Article.latest_article()
+
+    context = {
+        "tag": tag,
+        "category": category,
+        "article_ls": article_ls,
+        "Sidebars": SideBar.get_all(),
+    }
+    context.update(Category.get_navs())
+
+    return render(request, "blog/list.html", context=context)
+
+
+def article_detail(request, article_id=None):
+    try:
+        article = Article.objects.get(id=article_id)
+    except Article.DoesNotExist:
+        article = None
+
+    context = {
+        "article": article,
+        "Sidebars": SideBar.get_all(),
+    }
+    return render(request, "blog/detail.html", context=context)
+"""
+
+
+class CommonViewMixin:
+    """把侧边栏数据获取放到context中，因为很多页面都共用这些数据"""
+    def get_context_data(self, **kwargs):
+        context = super(CommonViewMixin, self).get_context_data(**kwargs)
+        context.update({
+            "sidebars": SideBar.get_all()
+        })
+        context.update(Category.get_navs())
+        return context
+
+
+class IndexView(CommonViewMixin, ListView):
+    """
+    对比上面的article_list()，相似的功能（这里还加了分页功能）代码却少了很多。
+    之所以代码少，是因为ListView里面实现了get方法，只需要人为地设置少量参数，ListView
+    自动将选数据，渲染数据，返回response全包干了
+    """
+    queryset = Article.latest_article()  # 如果指定model=Article，等价于queryset = Article.objects.all()
+    paginate_by = 5
+    context_object_name = "article_ls"  # 模板中使用的变量名(即context={"article_ls": queryset})
+    template_name = "blog/list.html"
+
+
+class CategoryView(IndexView):
+    def get_context_data(self, **kwargs):
+        context = super(CategoryView, self).get_context_data(**kwargs)
+        category_id = self.kwargs.get("category_id")  # 就是url解析器捕获的关键字参数
+        category = get_object_or_404(Category, pk=category_id)
+        context.update({
+            "category": category,
+        })
+        return context
+
+    def get_queryset(self):
+        """
+        根据分类过滤
+        就是重写MultipleObjectMixin的get_queryset,该方法在BaseListView的get方法中被调用
+        该方法作用就是根据用户重写的queryset属性取出所有的数据对象，如果用户没有重写queryset
+        那就是取出所有数据，源码一目了然。
+        或者这个函数也可以用以下两行代替：
+        category_id = self.kwargs.get("category_id") # 这行需插入到get方法，不合理
+        queryset = Category.object.filter(category_id=category_id)
+
+        注意这里queryset是继承了IndexView中的queryset = Article.latest_article()
+        """
+        queryset = super(CategoryView, self).get_queryset()
+        category_id = self.kwargs.get("category_id")
+        return queryset.filter(category_id=category_id)  # 取出分类下的所有文章
+
+
+class TagView(IndexView):  # 逻辑跟CategoryView一样
+    def get_context_data(self, **kwargs):
+        context = super(TagView, self).get_context_data(**kwargs)
+        tag_id = self.kwargs.get("tag_id")
+        tag = get_object_or_404(Tag, pk=tag_id)
+        context.update({
+            "tag": tag,
+        })
+        return context
+
+    def get_queryset(self):
+        """重写queryset，根据标签过滤"""
+        queryset = super(TagView, self).get_queryset()
+        tag_id = self.kwargs.get("tag_id")
+        """
+        跨关系查找都是双下划线+对方字段名。再如tag__status。容易混淆就是那个owner = models.ForeignKey()字段，
+        数据库中保存该字段是owner_id，这是数据库中就保存了owner_id字段名，用来代表外键的主键，上面说的那是跨关系查找了。
+        考虑这两种查找效果一样：user__id=1和owner_id=1，都是表示关联表中id=1的数据行
+        """
+        return queryset.filter(tag__id=tag_id)
+
+
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = "blog/detail.html"
+
+
+class ArticleListView(ListView):
+    queryset = Article.latest_article()
+    paginate_by = 1  # 设置分页，每页数量为1
+    context_object_name = "article_ls"  # 设置模板中使用的变量名
+    template_name = "blog/list.html"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -17,8 +17,27 @@ class Category(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="作者")
     created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = verbose_name_plural = "分类"
+
+    @classmethod
+    def get_navs(cls):
+        nav_category = []
+        normal_category = []
+        categories = cls.objects.filter(status=cls.STATUS_NORMAL)
+        for category in categories:
+            if category.is_nav:
+                nav_category.append(category)
+            else:
+                normal_category.append(category)
+
+        return {
+            "nav_category": nav_category,
+            "normal_category": normal_category
+        }
 
 
 class Tag(models.Model):
@@ -34,6 +53,9 @@ class Tag(models.Model):
                                          verbose_name="状态")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="作者")
     created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = verbose_name_plural = "标签"
@@ -59,33 +81,49 @@ class Article(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="作者")
     created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
+    pv = models.PositiveIntegerField(default=1)
+    uv = models.PositiveIntegerField(default=1)
+
     class Meta:
         verbose_name = verbose_name_plural = "文章"
         ordering = ["-id"]  # 根据id进行降序排列
 
+    @staticmethod
+    def get_by_tag(tag_id):
+        if tag_id:
+            try:
+                tag = Tag.objects.get(id=tag_id)
+            except Tag.DoesNotExist:
+                article_ls = []
+                tag = None
+            else:
+                article_ls = tag.article_set.filter(status=Article.STATUS_NORMAL)\
+                    .select_related("owner", "category")
+        else:
+            article_ls = []
+            tag = None
+        return article_ls, tag
 
+    @staticmethod
+    def get_by_category(category_id):
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            category = None
+            article_ls = []
+        else:
+            article_ls = category.article_set.filter(status=Article.STATUS_NORMAL)\
+                .select_related("owner", "category")
+        return article_ls, category
 
+    @classmethod
+    def latest_article(cls):
+        queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
+        return queryset
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @classmethod
+    def hot_article(cls):
+        return cls.objects.filter(status=cls.STATUS_NORMAL).order_by("-pv")
 
 
 
