@@ -41,9 +41,11 @@ INSTALLED_APPS = [
     "blog",
     "comment",
     "config",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
+    "blog.middleware.user_id.UserIDMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

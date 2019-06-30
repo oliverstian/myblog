@@ -72,7 +72,7 @@ class SideBar(models.Model):
             context = {
                 "articles": Article.latest_article()
             }
-            result = render_to_string("config/blocks/sidebar_articles.html", context)
+            result = render_to_string("config/block/sidebar_articles.html", context)
         elif self.display_type == self.DISPLAY_HOT:
             context = {
                 "articles": Article.hot_article()

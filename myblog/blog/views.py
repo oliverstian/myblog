@@ -1,8 +1,15 @@
+from datetime import date
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from blog.models import Article, Tag, Category
 from config.models import SideBar
 from django.views.generic import DetailView, ListView
+from django.db.models import Q, F
+
+from comment.models import Comment
+from comment.forms import CommentForm
+
+from django.core.cache import cache
 
 """  这两个视图函数没有使用，可用于参考和与类视图对比
 def article_list(request, category_id=None, tag_id=None):
@@ -50,6 +57,24 @@ class CommonViewMixin:
         })
         context.update(Category.get_navs())
         return context
+
+    def get_sidebars(self):
+        return SideBar.objects.filter(status=SideBar.STATUS_SHOW)
+
+    def get_navs(self):
+        categories = Category.objects.filter(status=Category.STATUS_NORMAL)
+        nav_categories = []
+        normal_categories = []
+        for cate in categories:
+            if cate.is_nav:
+                nav_categories.append(cate)
+            else:
+                normal_categories.append(cate)
+
+        return {
+            'navs': nav_categories,
+            'categories': normal_categories,
+        }
 
 
 class IndexView(CommonViewMixin, ListView):
@@ -113,9 +138,62 @@ class TagView(IndexView):  # 逻辑跟CategoryView一样
         return queryset.filter(tag__id=tag_id)
 
 
-class ArticleDetailView(DetailView):
-    model = Article
+class SearchView(IndexView):
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data()
+        context.update({
+            "keyword": self.request.GET.get("keyword", "")
+        })
+        return context
+
+    def get_queryset(self):
+        queryset = super(SearchView, self).get_queryset()
+        keyword = self.request.GET.get("keyword")
+        if not keyword:
+            return queryset
+        return queryset.filter(Q(title__icontains=keyword) | Q(desc__icontains=keyword))
+
+
+class AuthorView(IndexView):
+    def get_queryset(self):
+        queryset = super(AuthorView, self).get_queryset()
+        author_id = self.kwargs.get("owner_id")
+        return queryset.filter(owner_id=author_id)
+
+
+class ArticleDetailView(CommonViewMixin, DetailView):
+    # model = Article
+    queryset = Article.latest_article()
     template_name = "blog/detail.html"
+    context_object_name = "article"
+    pk_url_kwarg = "article_id"
+
+    def get(self, request, *args, **kwargs):
+        response = super(ArticleDetailView, self).get(request, *args, **kwargs)
+        self.handle_visited()
+        return response
+
+    def handle_visited(self):
+        increase_pv = False
+        increase_uv = False
+        uid = self.request.uid
+        pv_key = "pv:%s:%s" % (uid, self.request.path)
+        uv_key = "uv:%s:%s:%s" % (uid, str(date.today()), self.request.path)
+        if not cache.get(pv_key):
+            increase_pv = True
+            cache.set(pv_key, 1, 1*60)  # 一分钟有效
+
+        if not cache.get(uv_key):
+            increase_uv = True
+            cache.set(pv_key, 1, 24*60*60)  # 24小时有效
+
+        if increase_pv and increase_uv:  # 避免短时间内重复访问也算访问量
+            Article.objects.filter(pk=self.object.id).update(pv=F("pv") + 1,
+                                                             uv=F("uv") + 1)
+        elif increase_pv:
+            Article.objects.filter(pk=self.object.id).update(pv=F("pv") + 1)
+        elif increase_uv:
+            Article.objects.filter(pk=self.object.id).update(uv=F("uv") + 1)
 
 
 class ArticleListView(ListView):

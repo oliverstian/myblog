@@ -1,3 +1,4 @@
+import mistune
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -74,6 +75,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255, verbose_name="标题")
     desc = models.CharField(max_length=1024, blank=True, verbose_name="摘要")
     content = models.TextField(verbose_name="正文", help_text="必须为MarkDown格式")
+    content_html = models.TextField(verbose_name="正文HTML代码", blank=True, editable=False)
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
                                          choices=STATUS_ITEM, verbose_name="状态")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="分类")
@@ -125,7 +127,9 @@ class Article(models.Model):
     def hot_article(cls):
         return cls.objects.filter(status=cls.STATUS_NORMAL).order_by("-pv")
 
-
+    def save(self, *args, **kwargs):
+        self.content_html = mistune.markdown(self.content)  # 展示文章用这个字段。编辑文章用Markdown，展示用HTML格式
+        super(Article, self).save(*args, **kwargs)
 
 
 

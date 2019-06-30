@@ -14,7 +14,7 @@
         <div class="card-article">
             <div class="card body">
                 <h5 class="card-title"><a href="{% url 'article-detail' article.id %}">{{ article.title }}</a></h5>
-                <span class="card-link">作者:<a href="#">{{ article.owner.username }}</a></span>
+                <span class="card-link">作者:<a href="{% url 'author' article.owner.id %}">{{ article.owner.username }}</a></span>
                 <span class="card-link">分类：<a href="{% url 'category-list' article.category.id %}">{{ article.category.name }}</a></span>
                 <span class="card-link">标签：
                     {% for tag in article.tag.all %}
