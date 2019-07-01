@@ -1,67 +1,177 @@
 {% load static %}
 <!DOCTYPE HTML>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- 上述三个必须放开头 -->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- 上述三个必须放开头 -->
 
-    <title>{% block title %}首页{% endblock %}- oliver个人博客</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-    {% block extra_head %}
-    {% endblock %}
+        <title>{% block title %}首页{% endblock %}- oliver个人博客</title>
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/font-awesome-4.7.0/css/font-awesome.min.css' %}">
 
-    <style>
-    .article {
-        margin-bottom: 5px;
-    }
-    </style>
-  </head>
-  <body>
-    <div class="container head">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="/">首页</a>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            {% for cate in nav_category %}
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
-              </li>
-            {% endfor %}
-            </ul>
-            <form class="form-inline" action='/search/' method='GET'>
-                <input class="form-control" type="search" name="keyword" placeholder="Search" aria-label="Search" value="{{ keyword }}">
-              <button class="btn btn-outline-success" type="submit">搜索</button>
-            </form>
-          </div>
+        {% block extra_head %}
+        {% endblock %}
+
+    </head>
+    <body>
+        <!-- 导航条开始 -->
+        <nav class="navbar navbar-default navbar-fixed-top navbar-expand-md navbar-oliver">
+            <div class="container container-oliver">
+                <div class="row">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapse-content-oliver" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/"><i class="logo-oliver">OliverTian个人博客</i></a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="collapse-content-oliver">  <!-- id要和上面button的data-target一致 -->
+                        <ul class="nav navbar-nav">
+                        {% for cate in nav_category %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">登陆</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">注册</a>
+                            </li>
+                        </ul>
+
+                        <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search" action='/search/' method='GET'>
+                            <div class="form-group">
+                                <input class="form-control rounded-0 f-15" type="search" name="keyword" placeholder="Search" aria-label="Search" value="{{ keyword }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">搜索</button>
+                        </form>
+
+                    </div><!-- /.navbar-collapse -->
+                </div>
+            </div><!-- /.container-fluid -->
         </nav>
-        <div class="jumbotron">
-            <h1 class="display-4">Olivertian</h1>
-            <p class="lead">基于Django的多人博客系统</p>
-        </div>
-	</div>
+        <!-- 导航条结束-->
 
-	<div class="container main">
-        <div class="row">
-            <div class="col-xl-9 post-list">
-            {% block main %}
-            {% endblock %}
-            </div>
-            <div class="col-xl-3">
-                {% block sidebar %}
-                    {% for sidebar in sidebars %}
-                    <div class="card sidebar">
-                        <div class="card-body">
-                            <h4 class="card-title">{{ sidebar.title }}</h4>
-                            {{ sidebar.content_html }}
+
+        <!-- 内容主体+侧边栏 开始 -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">  <!-- 内容部分 -->
+                {% block main %}
+                {% endblock %}
+                </div>
+                <div class="col-lg-4">  <!-- 侧栏部分 -->
+
+                   <!--个人空间-->
+                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-lg-block" id="home-card">
+                        <div class="card-header bg-white px-0">
+                            <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
+                        </div>
+                        <div class="card-body px-0 pt-3 pb-1">
+                            <div class="row text-center">
+                                <div class="col">
+                                    <a href="https://github.com/Hopetree" target="_blank" title="进入博主的Github查看博客源码">
+                                        <img style="max-width:40px" alt="博主的github" src="{% static 'imgs/github.png' %}">
+                                        <p class="mt-2">Github</p>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    {% endfor %}
-                {% endblock %}
+
+                    <!-- 最热文章 -->
+                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="category-card">
+
+                        <div class="card-header bg-white px-0">
+                            <strong><i class="fa fa-book mr-2 f-17"></i>最热文章</strong>
+                        </div>
+
+                        <div class="list-group">
+                        {% for latest_article in latest_articles %}
+                            <a href="{% url 'article-detail' latest_article.id %}" class="list-group-item">
+                                <!-- <span class="thumbnail" style="background-image:url(https://www.yuanrenxue.com/wp-content/uploads/2019/06/未标题-1.jpg)"></span> -->
+                                <h4>{{ latest_article.title }}</h4>
+                                <span>阅读({{ latest_article.pv }})</span>
+                            </a>
+                        {% endfor %}
+                        </div>
+
+                    </div>
+
+                    <!--标签云-->
+                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="tag-card">
+                        <div class="card-header bg-white px-0">
+                            <strong><i class="fa fa-tags mr-2 f-17"></i>标&nbsp;签&nbsp;云</strong>
+                        </div>
+                        <div class="card-body px-0 py-3">
+                            <div class="tag-cloud">
+                                {% for tag in all_tags %}
+                                <a href="{% url 'tag-list' tag.id %}" class="tags f-16" id="tag-{{ tag.id }}">{{ tag.name }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--友链-->
+{#                    <div class="d-none d-lg-block">#}
+{#                        <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="friends-card">#}
+{#                            <div class="card-header bg-white px-0">#}
+{#                                <strong><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>#}
+{#                            </div>#}
+{#                            <div class="card-body px-0 py-3">#}
+{#                                <div class="tool-list">#}
+{#                                    {% get_friends as friends %}#}
+{#                                    {% for friend in friends %}#}
+{#                                    <div class="w-50 float-left text-center mb-2">#}
+{#                                        <div class="mx-2">#}
+{#                                            <a href="{{ friend.link }}" title="{{ friend.description }}" target="_blank">#}
+{#                                                {{ friend.name }}</a>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    {% endfor %}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+
+
+                </div>
             </div>
         </div>
-    </div>
+        <!-- 内容主体+侧边栏 结束 -->
+
+{#    <div class="container main">#}
+{#        <div class="row">#}
+{#            <div class="col-xl-9 post-list">#}
+{#            {% block main %}#}
+{#            {% endblock %}#}
+{#            </div>#}
+{#            <div class="col-xl-3">#}
+{#                {% block sidebar %}#}
+{#                    {% for sidebar in sidebars %}#}
+{#                    <div class="card sidebar">#}
+{#                        <div class="card-body">#}
+{#                            <h4 class="card-title">{{ sidebar.title }}</h4>#}
+{#                            {{ sidebar.content_html }}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    {% endfor %}#}
+{#                {% endblock %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
     <footer class="footer">
         {% block footer %}
@@ -78,7 +188,8 @@
         </div>
         {% endblock %}
     </footer>
-    <script src="{% static 'jquery/jquery-3.4.1.js/jquery-3.4.1.min.js' %}"></script>
+
+    <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>  <!-- bootstrap依赖jQuery，比如上面的data-toggle不导入jQuery就无法下拉 -->
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
-  </body>
+    </body>
 </html>

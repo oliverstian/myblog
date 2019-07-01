@@ -42,10 +42,10 @@ class SideBar(models.Model):
         (DISPLAY_HOT, "最热文章"),
         (DISPLAY_COMMENT, "最近评论"),
     )
-    title = models.CharField(max_length=50, verbose_name="标题")
+    title = models.CharField(max_length=50, verbose_name="标题")  # 后续把这个去掉，只留下展示类型（也就是侧栏有几种展示类型）
     display_type = models.PositiveIntegerField(default=1, choices=SIDE_TYPE,
                                                verbose_name="展示类型")
-    content = models.CharField(max_length=500, blank=True, verbose_name="内容",
+    content = models.CharField(max_length=500, blank=True, verbose_name="内容",  # 这个可以留着，可以作为备注
                                help_text="如果设置的不是HTML类型，可为空")
     status = models.PositiveIntegerField(default=STATUS_SHOW, choices=STATUS_ITEM,
                                          verbose_name="状态")
@@ -77,7 +77,7 @@ class SideBar(models.Model):
             context = {
                 "articles": Article.hot_article()
             }
-            result = render_to_string("config/blocks/sidebar_articles.html", context)
+            result = render_to_string("config/block/sidebar_articles.html", context)
         elif self.display_type == self.DISPLAY_COMMENT:
             context = {
                 "comments": Comment.objects.filter(status=Comment.STATUS_NORMAL)

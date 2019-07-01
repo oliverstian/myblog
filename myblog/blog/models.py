@@ -61,6 +61,10 @@ class Tag(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = "标签"
 
+    @classmethod
+    def get_all(cls):
+        return cls.objects.filter(status=cls.STATUS_NORMAL)
+
 
 class Article(models.Model):
     STATUS_NORMAL = 1

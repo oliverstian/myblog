@@ -53,28 +53,13 @@ class CommonViewMixin:
     def get_context_data(self, **kwargs):
         context = super(CommonViewMixin, self).get_context_data(**kwargs)
         context.update({
-            "sidebars": SideBar.get_all()
+            # "sidebars": SideBar.get_all()  # 把所有需要显示的侧栏数据行都拿到
+            "latest_articles": Article.latest_article(),  # 获取最新文章
+            "hot_articles": Article.latest_article(),  # 获取最热文章
+            "all_tags": Tag.get_all(),  # 获取所有标签
         })
-        context.update(Category.get_navs())
+        context.update(Category.get_navs())  # 把上导航和下导航的数据拿到
         return context
-
-    def get_sidebars(self):
-        return SideBar.objects.filter(status=SideBar.STATUS_SHOW)
-
-    def get_navs(self):
-        categories = Category.objects.filter(status=Category.STATUS_NORMAL)
-        nav_categories = []
-        normal_categories = []
-        for cate in categories:
-            if cate.is_nav:
-                nav_categories.append(cate)
-            else:
-                normal_categories.append(cate)
-
-        return {
-            'navs': nav_categories,
-            'categories': normal_categories,
-        }
 
 
 class IndexView(CommonViewMixin, ListView):

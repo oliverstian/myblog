@@ -1,0 +1,44 @@
+
+body {
+    padding-top:80px;
+    font-family: Arial,"Microsoft yahei","Hiragino Sans GB","冬青黑体简体中文 w3",STXihei,"华文细黑","微软雅黑",SimSun,"宋体",Heiti,"黑体",sans-serif;
+    font-size: 14px;
+    color: #273746;
+    background: #f4f4f4;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #ac2925;
+}
+
+
+
+.article {
+    margin-bottom: 5px;
+}
+
+
+.navbar-oliver{
+    background-color: #fff;
+    margin-bottom: 0;
+    height: 61px;
+}
+
+.navbar-oliver .container-oliver{
+    padding: 5px 0px;
+}
+
+.logo-oliver{
+    font-size: 20px;
+    color: #2aabd2;
+}
+
+.navbar-oliver .container-oliver #collapse-content-oliver a{
+    color: #273746;
+    font-weight: normal;
+    font-size: 16px;
+}
+.navbar-oliver .container-oliver #collapse-content-oliver a:hover{
+    color: red;
+}
