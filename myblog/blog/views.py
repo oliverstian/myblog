@@ -55,7 +55,7 @@ class CommonViewMixin:
         context.update({
             # "sidebars": SideBar.get_all()  # 把所有需要显示的侧栏数据行都拿到
             "latest_articles": Article.latest_article(),  # 获取最新文章
-            "hot_articles": Article.latest_article(),  # 获取最热文章
+            "hot_articles": Article.hot_article(),  # 获取最热文章
             "all_tags": Tag.get_all(),  # 获取所有标签
         })
         context.update(Category.get_navs())  # 把上导航和下导航的数据拿到

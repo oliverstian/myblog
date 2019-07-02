@@ -129,7 +129,7 @@ class Article(models.Model):
 
     @classmethod
     def hot_article(cls):
-        return cls.objects.filter(status=cls.STATUS_NORMAL).order_by("-pv")
+        return cls.objects.filter(status=cls.STATUS_NORMAL).order_by("-pv")[:5]
 
     def save(self, *args, **kwargs):
         self.content_html = mistune.markdown(self.content)  # 展示文章用这个字段。编辑文章用Markdown，展示用HTML格式

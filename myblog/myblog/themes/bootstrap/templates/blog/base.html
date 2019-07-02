@@ -8,9 +8,9 @@
         <!-- 上述三个必须放开头 -->
 
         <title>{% block title %}首页{% endblock %}- oliver个人博客</title>
-        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap-4.3.1-dist/css/bootstrap.css' %}">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-        <link rel="stylesheet" href="{% static 'bootstrap/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
 
         {% block extra_head %}
         {% endblock %}
@@ -18,49 +18,37 @@
     </head>
     <body>
         <!-- 导航条开始 -->
-        <nav class="navbar navbar-default navbar-fixed-top navbar-expand-md navbar-oliver">
-            <div class="container container-oliver">
-                <div class="row">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapse-content-oliver" aria-expanded="false">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="/"><i class="logo-oliver">OliverTian个人博客</i></a>
-                    </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top navbar-oliver">  <!-- bg白 -->
+            <div class="container nav_style_oliver">
+                <a class="navbar-brand" href="/"><i id="logo-oliver">Blog of OliverTian</i></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="collapse-content-oliver">  <!-- id要和上面button的data-target一致 -->
-                        <ul class="nav navbar-nav">
-                        {% for cate in nav_category %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
-                            </li>
-                        {% endfor %}
-                        </ul>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                    {% for cate in nav_category %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
+                        </li>
+                    {% endfor %}
+                    </ul>
 
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">登陆</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">注册</a>
-                            </li>
-                        </ul>
+                    <form class="form-inline my-2 my-lg-0 pr-lg-2" role="search" action='/search/' method='GET'>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-success my-2 my-sm-0" type="submit">搜索</button>
+                    </form>
 
-                        <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search" action='/search/' method='GET'>
-                            <div class="form-group">
-                                <input class="form-control rounded-0 f-15" type="search" name="keyword" placeholder="Search" aria-label="Search" value="{{ keyword }}">
-                            </div>
-                            <button type="submit" class="btn btn-primary">搜索</button>
-                        </form>
-
-                    </div><!-- /.navbar-collapse -->
+                    <ul class="navbar-nav mr-sm-0">  <!-- mr-sm-0表示margin right 0px -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">登陆</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">注册</a>
+                        </li>
+                    </ul>
                 </div>
-            </div><!-- /.container-fluid -->
+            </div>
         </nav>
         <!-- 导航条结束-->
 
@@ -68,12 +56,11 @@
         <!-- 内容主体+侧边栏 开始 -->
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">  <!-- 内容部分 -->
+                <div class="col-md-8">  <!-- 内容部分 -->
                 {% block main %}
                 {% endblock %}
                 </div>
-                <div class="col-lg-4">  <!-- 侧栏部分 -->
-
+                <div class="col-md-4">  <!-- 侧栏部分 -->
                    <!--个人空间-->
                     <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-lg-block" id="home-card">
                         <div class="card-header bg-white px-0">
@@ -92,22 +79,26 @@
                     </div>
 
                     <!-- 最热文章 -->
-                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="category-card">
-
+                    <div class="card border-0 rounded-0 pl-3 pr-3" id="hot-article-oliver">
                         <div class="card-header bg-white px-0">
                             <strong><i class="fa fa-book mr-2 f-17"></i>最热文章</strong>
                         </div>
-
-                        <div class="list-group">
-                        {% for latest_article in latest_articles %}
-                            <a href="{% url 'article-detail' latest_article.id %}" class="list-group-item">
-                                <!-- <span class="thumbnail" style="background-image:url(https://www.yuanrenxue.com/wp-content/uploads/2019/06/未标题-1.jpg)"></span> -->
-                                <h4>{{ latest_article.title }}</h4>
-                                <span>阅读({{ latest_article.pv }})</span>
+                        <div class="list-group list-group-flush">
+                            {% for hot_article in hot_articles %}
+                            <a href="{% url 'article-detail' hot_article.id %}" class="pl-0 pr-0 list-group-item">
+                                <div class="row no-gutters" style="height: 80px">
+                                    <div class="col-md-4">
+                                        <img class="card-img img-tiled-oliver" src="{% static 'imgs/1.png' %}">
+                                    </div>
+                                    <div class="col-md-8 pl-2">
+                                        <h6 class="font-weight-bold">{{ hot_article.title }}</h6>
+                                        <span class="text-muted mr-2">{{ hot_article.created_time }}</span>
+                                        <span class="text-muted">阅读({{ hot_article.pv }})</span>
+                                    </div>
+                                </div>
                             </a>
-                        {% endfor %}
+                            {% endfor %}
                         </div>
-
                     </div>
 
                     <!--标签云-->
@@ -190,6 +181,6 @@
     </footer>
 
     <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>  <!-- bootstrap依赖jQuery，比如上面的data-toggle不导入jQuery就无法下拉 -->
-    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bootstrap-4.3.1-dist/js/bootstrap.js' %}"></script>
     </body>
 </html>
