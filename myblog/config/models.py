@@ -23,6 +23,10 @@ class Link(models.Model):  # 友链
     class Meta:
         verbose_name = verbose_name_plural = "友链"
 
+    @classmethod
+    def get_all(cls):
+        return cls.objects.filter(status=cls.STATUS_NORMAL).order_by("-weight")
+
 
 class SideBar(models.Model):
     STATUS_SHOW = 1

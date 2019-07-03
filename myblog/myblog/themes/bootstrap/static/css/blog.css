@@ -54,3 +54,74 @@ a{
 #hot-article-oliver a:hover h6{  /* 侧栏鼠标悬停a上时，使标题变蓝，但是不能有下划线 */
     color: #007bff;
 }
+/************************************************ 字体 ****************************************/
+.f-16{
+    font-size: 16px;
+}
+/*********************************************** 标签云 ***************************************/
+.tag-cloud {
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    text-align: left;
+}
+.tags {
+    color:#fff;
+    padding: .08rem .4rem;
+    float: left;
+    text-align: center;
+    margin: .3rem;
+    transition: all .5s;  /* 所有属性（all）在0.5s内产生过渡效果 */
+}
+/*云标签颜色*/
+.tags:nth-child(9n+1) {
+    background:#78BBE6;
+}
+.tags:nth-child(9n+2){
+    background:#FF895D;
+}
+.tags:nth-child(9n+3) {
+    background:#A3DE83;
+}
+.tags:nth-child(9n+4) {
+    background:#00BBF0;
+}
+.tags:nth-child(9n+5) {
+    background:#FF2E63;
+}
+.tags:nth-child(9n+6) {
+    background:#0D7377;
+}
+.tags:nth-child(9n+7) {
+    background:#AC005D;
+}
+.tags:nth-child(9n+8) {
+    background:#0881A3;
+}
+.tags:nth-child(9n+9) {
+    background:#EDA045;
+}
+.tags:hover {
+    color:#fff;
+    background:#333;
+    text-decoration: none;
+}
+
+/********************************************* 友链 ****************************************/
+#friends-link-olver a{
+    width: 45%;
+    color: #218838;
+    display: inline-block;
+    float: left;
+    line-height: 20px;
+    padding: 2px 0px;
+    margin: 8px 4px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#friends-link-olver a:hover{
+    text-decoration: none;
+    color: #007bff;
+    transition: all 0.3s;
+}

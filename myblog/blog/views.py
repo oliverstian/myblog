@@ -2,7 +2,7 @@ from datetime import date
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from blog.models import Article, Tag, Category
-from config.models import SideBar
+from config.models import SideBar, Link
 from django.views.generic import DetailView, ListView
 from django.db.models import Q, F
 
@@ -54,9 +54,10 @@ class CommonViewMixin:
         context = super(CommonViewMixin, self).get_context_data(**kwargs)
         context.update({
             # "sidebars": SideBar.get_all()  # 把所有需要显示的侧栏数据行都拿到
-            "latest_articles": Article.latest_article(),  # 获取最新文章
+            "latest_articles": Article.get_newest_article(),  # 获取最新文章
             "hot_articles": Article.hot_article(),  # 获取最热文章
             "all_tags": Tag.get_all(),  # 获取所有标签
+            "friend_links": Link.get_all(),  # 获取所有友链
         })
         context.update(Category.get_navs())  # 把上导航和下导航的数据拿到
         return context

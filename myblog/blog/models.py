@@ -65,6 +65,9 @@ class Tag(models.Model):
     def get_all(cls):
         return cls.objects.filter(status=cls.STATUS_NORMAL)
 
+    def article_nums(self):  # 返回该标签实例下的文章数
+        return self.article_set.count()
+
 
 class Article(models.Model):
     STATUS_NORMAL = 1
@@ -93,6 +96,13 @@ class Article(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = "文章"
         ordering = ["-id"]  # 根据id进行降序排列
+
+    def save(self, *args, **kwargs):
+        self.content_html = mistune.markdown(self.content)  # 展示文章用这个字段。编辑文章用Markdown，展示用HTML格式
+        super(Article, self).save(*args, **kwargs)
+
+    def time_short_format(self):
+        return str(self.created_time).split(" ")[0]  # 把具体时刻去掉，只留下年月日
 
     @staticmethod
     def get_by_tag(tag_id):
@@ -128,12 +138,14 @@ class Article(models.Model):
         return queryset
 
     @classmethod
+    def get_newest_article(cls):
+        queryset = cls.objects.filter(status=cls.STATUS_NORMAL).order_by("created_time")[:5]
+        return queryset
+
+    @classmethod
     def hot_article(cls):
         return cls.objects.filter(status=cls.STATUS_NORMAL).order_by("-pv")[:5]
 
-    def save(self, *args, **kwargs):
-        self.content_html = mistune.markdown(self.content)  # 展示文章用这个字段。编辑文章用Markdown，展示用HTML格式
-        super(Article, self).save(*args, **kwargs)
 
 
 

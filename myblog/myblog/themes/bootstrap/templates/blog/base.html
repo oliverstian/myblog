@@ -53,35 +53,42 @@
         <!-- 导航条结束-->
 
 
+
         <!-- 内容主体+侧边栏 开始 -->
         <div class="container">
             <div class="row">
-                <div class="col-md-8">  <!-- 内容部分 -->
+                <div class="col-md-8 pr-0">  <!-- 内容部分 -->
                 {% block main %}
                 {% endblock %}
                 </div>
                 <div class="col-md-4">  <!-- 侧栏部分 -->
                    <!--个人空间-->
-                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-lg-block" id="home-card">
+                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-lg-block" id="private-oliver">
                         <div class="card-header bg-white px-0">
                             <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
                         </div>
                         <div class="card-body px-0 pt-3 pb-1">
                             <div class="row text-center">
                                 <div class="col">
-                                    <a href="https://github.com/Hopetree" target="_blank" title="进入博主的Github查看博客源码">
+                                    <a href="https://github.com/oliverstian" target="_blank" title="进入博主的Github查看博客源码">  <!-- target='_blank'表示在新窗口打开链接 -->
                                         <img style="max-width:40px" alt="博主的github" src="{% static 'imgs/github.png' %}">
                                         <p class="mt-2">Github</p>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="https://home.cnblogs.com/u/olivertian/" target="_blank" title="博主的博客园">  <!-- target='_blank'表示在新窗口打开链接 -->
+                                        <img style="max-width:40px" alt="博主的博客园" src="{% static 'imgs/cnblogs.jpg' %}">
+                                        <p class="mt-2">博客园</p>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 最热文章 -->
-                    <div class="card border-0 rounded-0 pl-3 pr-3" id="hot-article-oliver">
+                    <!-- 热门文章 -->
+                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="hot-article-oliver">
                         <div class="card-header bg-white px-0">
-                            <strong><i class="fa fa-book mr-2 f-17"></i>最热文章</strong>
+                            <strong><i class="fa fa-book mr-2 f-17"></i>热门文章</strong>
                         </div>
                         <div class="list-group list-group-flush">
                             {% for hot_article in hot_articles %}
@@ -92,7 +99,7 @@
                                     </div>
                                     <div class="col-md-8 pl-2">
                                         <h6 class="font-weight-bold">{{ hot_article.title }}</h6>
-                                        <span class="text-muted mr-2">{{ hot_article.created_time }}</span>
+                                        <span class="text-muted mr-2">{{ hot_article.time_short_format }}</span>
                                         <span class="text-muted">阅读({{ hot_article.pv }})</span>
                                     </div>
                                 </div>
@@ -109,34 +116,26 @@
                         <div class="card-body px-0 py-3">
                             <div class="tag-cloud">
                                 {% for tag in all_tags %}
-                                <a href="{% url 'tag-list' tag.id %}" class="tags f-16" id="tag-{{ tag.id }}">{{ tag.name }}</a>
+                                <a href="{% url 'tag-list' tag.id %}" class="tags f-16" title="共{{ tag.article_nums }}篇文章">{{ tag.name }}（{{ tag.article_nums }}）</a>
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
 
                     <!--友链-->
-{#                    <div class="d-none d-lg-block">#}
-{#                        <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="friends-card">#}
-{#                            <div class="card-header bg-white px-0">#}
-{#                                <strong><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>#}
-{#                            </div>#}
-{#                            <div class="card-body px-0 py-3">#}
-{#                                <div class="tool-list">#}
-{#                                    {% get_friends as friends %}#}
-{#                                    {% for friend in friends %}#}
-{#                                    <div class="w-50 float-left text-center mb-2">#}
-{#                                        <div class="mx-2">#}
-{#                                            <a href="{{ friend.link }}" title="{{ friend.description }}" target="_blank">#}
-{#                                                {{ friend.name }}</a>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                    {% endfor %}#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
+                    <div class="d-none d-lg-block">
+                        <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="friends-link-olver">
+                            <div class="card-header bg-white px-0">
+                                <strong><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>
+                            </div>
 
+                            <div class="card-body px-2">
+                                {% for friend_link in friend_links %}
+                                <a href="{{ friend_link.href }}" target="_blank" class="f-16">{{ friend_link.title }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
