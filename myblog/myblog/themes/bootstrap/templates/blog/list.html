@@ -14,96 +14,104 @@
 <style>
 
 /* 尽量使用class而不是id的好处是可以根据需要添加class，而id就只能使用一个 */
-    .main-header{
-        height: 260px;
-        width: 100%;
-        margin-bottom: 10px;
-        overflow: hidden;
-        box-sizing: border-box;
-    }
 
-    #top-show .header-left{
-        display: block;
-        float: left;
-        width: 60%;
-        height: 100%;
-        background-image: url("{% static 'imgs/2.png' %}");
-        overflow: hidden;
-    }
+/*************************** 顶部海报部分 ****************************/
 
-    #top-show .header-right{
-        width: 40%;
-        height: 100%;
-        float: right;
-        padding:0px 10px;
-    }
 
-    #top-show .top-title{
-        margin: 15px 0px;  /* 注意这个上下外边距会和兄弟元素或父元素的上下外边距重叠 */
-        max-height: 60px;
-        font-weight: 700;
-        line-height: 30px;
-        border-bottom: 1px solid #dee2e6;  /* 和bootstrap保持一致 */
-    }
+/*************************** 文章置顶部分 ****************************/
+#top-articles a{
+    left: 0;
+    bottom: 10px;
+    width: 70%;
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+    background-color: #000000;
+    opacity: 0.6;
+    font-weight: 700;
+    padding-left: 10px;
+    max-height: 60px;
+    overflow: hidden;
+}
+#top-articles a:hover{
+    padding-left: 12px;
+    text-decoration: none;
+}
 
-    #top-show .top-title a:hover{
-        text-decoration: none;
-        color: #007bff;
-        transition: all 0.2s;
-    }
+/******************************************** 正文列表部分 **********************************************/
+#main-articles li a img{
+    cursor: pointer;
+    transition: all 0.6s;
+}
 
-    #top-show .author{
-        height: 40px;
-        margin: 15px 0px;
-    }
-
-    #top-show .author img{
-        float: left;
-        max-width: 40px;
-    }
-
-    #top-show .author span{
-        display: block;
-        float: left;
-        padding-top: 20px;
-        margin: 0px 10px;
-    }
-
-    #top-show .abstract{
-        max-height: 60px;
-        overflow: hidden;
-        margin: 15px 0px;
-        line-height: 20px;
-    }
+#main-articles li a img:hover{
+    transform:scale(1.05);
+}
 
 </style>
 {% endblock %}
 
 {% block main %}
-    <div class="main-header" id="top-show">
-        <a class="header-left" href="#"></a>
-        <div class="header-right bg-white">
-            <h6 class="top-title"><a href="#">{{ hot_articles.1.title }}框架是个开机后季卡三极管</a></h6>
-            <div class="author">
-                <img src="{% static 'imgs/github.png' %}" alt="">
-                <span>作者：{{ hot_articles.1.owner }}</span>
-                <span>时间：{{ hot_articles.1.time_short_format }}</span>
+    <!-- 顶部海报栏 -->
+
+    <div class="card mb-2">
+        <div class="row no-gutters">
+            <div class="col-xl-8">
+                <img src="{% static 'imgs/2.png' %}" class="card-img" alt="...">
             </div>
-            <div class="abstract">
-                {{ hot_articles.1.desc }}可以时不时跟换看世界观南汉山城开心呢女合并卡寄过来那家伙就考虑到桑看了三年个...
+            <div class="col-xl-4">
+                <div class="card-body px-3 py-3">
+                    <h6 class="card-title border-bottom border-success font-weight-bold"><a href="#" class="card-link">{{ hot_articles.1.title }}框架是个开机后季卡三极管</a></h6>
+                    <div class="mb-1 d-none d-sm-block">{{ hot_articles.1.desc }}可以时不时跟换看世界观南汉山城开心呢女合并卡寄过来那家伙就考虑到桑看了三年个...</div>
+                    <a href="#" class="btn btn-secondary btn-sm mb-3 d-none d-sm-inline-block" role="button" aria-pressed="true">详情...</a>
+                    <div class="overflow-hidden">
+                        <img src="{% static 'imgs/github.png' %}" style="width: 20%;max-width: 40px" class="float-left">
+                        <div class="float-left pl-2">
+                            <div>作者：{{ hot_articles.1.owner }}来自星星的你</div>
+                            <div>时间：{{ hot_articles.1.time_short_format }}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <a href="#" class="btn btn-secondary btn-sm" role="button" aria-pressed="true">阅读详情</a>
         </div>
     </div>
 
-
-    <div>
-
+    <!-- 置顶文章部分 -->
+    <div class="row mx-0 mb-4 ml-n2 position-relative" id="top-articles">
+        <div class="col px-0 ml-2">
+            <img src="{% static "/imgs/3.png" %}" class="w-100" alt="">
+            <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历看看在哪里，分享一下我的工作经历看看在哪里，分享一下我的工作经历</a>
+        </div>
+        <div class="col px-0 ml-2">
+            <img src="{% static "/imgs/1.png" %}" class="w-100" alt="">
+            <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历</a>
+        </div>
+        <div class="col px-0 ml-2 d-none d-sm-block">
+            <img src="{% static "/imgs/3.png" %}" class="w-100" alt="">
+            <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历</a>
+        </div>
     </div>
 
+    <!-- 正文列表部分 -->
+    <ul class="list-unstyled" id="main-articles">
+        <li class="media my-3 bg-white py-3 px-3">
+            <div class="mr-3 align-self-center" style="width: 31%">
+                <a href="#" target="_blank">
+                    <img src="{% static "/imgs/3.png" %}" class="w-100" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h6 class="mt-0 mb-1 border-bottom font-weight-bold"><a href="#">大山的子孙呦，出太阳洛</a></h6>
+                <p class="d-none d-sm-block mb-2 f-15">这是一些概要，所以说可以不看，或者想看也行，但是我要去跑步去了...</p>
+                <p class="d-block d-sm-none mb-2 f-15">这是大屏幕的概述，看看这个有什么不一样的呢，或许很不一样吧...</p>
+                <div>
 
-    <div></div>
+                </div>
+            </div>
+        </li>
+    </ul>
 {% endblock %}
+
 
 
 
