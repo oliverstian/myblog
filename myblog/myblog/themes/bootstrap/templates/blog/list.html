@@ -17,7 +17,6 @@
 
 /*************************** 顶部海报部分 ****************************/
 
-
 /*************************** 文章置顶部分 ****************************/
 #top-articles a{
     left: 0;
@@ -57,17 +56,19 @@
     <div class="card mb-2">
         <div class="row no-gutters">
             <div class="col-xl-8">
-                <img src="{% static 'imgs/2.png' %}" class="card-img" alt="...">
+                <a href="#"><img src="{% static 'imgs/2.png' %}" class="card-img" alt="..."></a>
             </div>
             <div class="col-xl-4">
                 <div class="card-body px-3 py-3">
-                    <h6 class="card-title border-bottom border-success font-weight-bold"><a href="#" class="card-link">{{ hot_articles.1.title }}框架是个开机后季卡三极管</a></h6>
+                    <h6 class="card-title border-bottom border-success font-weight-bold lh-25-oli">
+                        <a href="#" class="card-link">{{ hot_articles.1.title }}框架是个开机后季卡三极管</a>
+                    </h6>
                     <div class="mb-1 d-none d-sm-block">{{ hot_articles.1.desc }}可以时不时跟换看世界观南汉山城开心呢女合并卡寄过来那家伙就考虑到桑看了三年个...</div>
                     <a href="#" class="btn btn-secondary btn-sm mb-3 d-none d-sm-inline-block" role="button" aria-pressed="true">详情...</a>
                     <div class="overflow-hidden">
-                        <img src="{% static 'imgs/github.png' %}" style="width: 20%;max-width: 40px" class="float-left">
-                        <div class="float-left pl-2">
-                            <div>作者：{{ hot_articles.1.owner }}来自星星的你</div>
+                        <img src="{% static 'imgs/github.png' %}" class="w-20-oli mw-35-oli float-left">
+                        <div class="float-left pl-2 w-80-oli text-muted f-12">
+                            <div class="text-truncate">作者：<a href="/" title="{{ hot_articles.1.owner }}">{{ hot_articles.1.owner }}看看这个名字能写多长，再长一点</a></div>
                             <div>时间：{{ hot_articles.1.time_short_format }}</div>
                         </div>
                     </div>
@@ -93,48 +94,34 @@
     </div>
 
     <!-- 正文列表部分 -->
+    {% for article in article_ls %}
     <ul class="list-unstyled" id="main-articles">
         <li class="media my-3 bg-white py-3 px-3">
-            <div class="mr-3 align-self-center" style="width: 31%">
+            <div class="mr-3 align-self-center w-32-oli">
                 <a href="#" target="_blank">
                     <img src="{% static "/imgs/3.png" %}" class="w-100" alt="...">
                 </a>
             </div>
-            <div class="media-body">
-                <h6 class="mt-0 mb-1 border-bottom font-weight-bold"><a href="#">大山的子孙呦，出太阳洛</a></h6>
-                <p class="d-none d-sm-block mb-2 f-15">这是一些概要，所以说可以不看，或者想看也行，但是我要去跑步去了...</p>
-                <p class="d-block d-sm-none mb-2 f-15">这是大屏幕的概述，看看这个有什么不一样的呢，或许很不一样吧...</p>
-                <div>
-
+            <div class="media-body w-65-oli">
+                <h6 class="mt-0 mb-2 border-bottom font-weight-bold text-truncate lh-30-oli">
+                    <a href="{% url 'article-detail' article.id %}" target="_blank" class="text-decoration-none" title="{{ article.title }}">{{ article.title }}</a>
+                </h6>
+                <p class="d-none d-sm-block mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
+                <p class="d-block d-sm-none mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
+                <div class="lh-20-oli">
+                    <img class="d-inline-block" style="width: 20px" src="{% static 'imgs/github.png' %}" alt="">
+                    <a href="/">{{ article.owner }}</a>
+                    <span class="pl-3 d-none d-lg-inline"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ article.time_short_format }}</span>
+                    <span class="pl-3"><i class="fa fa-eye" aria-hidden="true"></i> 阅读({{ article.pv }})</span>
+                    <span class="pl-3 d-none d-md-inline"><i class="fa fa-comment" aria-hidden="true"></i> 评论({{ article.pv }})</span>
                 </div>
             </div>
         </li>
     </ul>
+    {% endfor %}
 {% endblock %}
 
 
-
-
-
-
-
-<!--
-{#{% block main %}#}
-{#    {% for article in article_ls %}#}
-{#        <div class="card-article">#}
-{#            <div class="card body">#}
-{#                <h5 class="card-title"><a href="{% url 'article-detail' article.id %}">{{ article.title }}</a></h5>#}
-{#                <span class="card-link">作者:<a href="{% url 'author' article.owner.id %}">{{ article.owner.username }}</a></span>#}
-{#                <span class="card-link">分类：<a href="{% url 'category-list' article.category.id %}">{{ article.category.name }}</a></span>#}
-{#                <span class="card-link">标签：#}
-{#                    {% for tag in article.tag.all %}#}
-{#                        <a href="{% url 'tag-list'  tag.id %}">{{ tag.name }}</a>#}
-{#                    {% endfor %}#}
-{#                </span>#}
-{#                <p class="card-text">{{ article.desc }}<a href="{% url 'article-detail' article.id %}">完整内容</a></p>#}
-{#            </div>#}
-{#        </div>#}
-{#    {% endfor %}#}
 {##}
 {#    {% if page_obj %}#}
 {#        {% if page_obj.has_previous %}#}
@@ -147,7 +134,6 @@
 {#    {% endif %}#}
 {#{% endblock %}#}
 
--->
 
 
 
