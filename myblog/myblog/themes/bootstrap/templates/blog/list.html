@@ -16,12 +16,17 @@
 /* 尽量使用class而不是id的好处是可以根据需要添加class，而id就只能使用一个 */
 
 /*************************** 顶部海报部分 ****************************/
-
+#top-post h6 a{
+    color: #1e7e34;
+}
+#top-post h6 a:hover{
+    color: #5cb85c;
+}
 /*************************** 文章置顶部分 ****************************/
 #top-articles a{
     left: 0;
     bottom: 10px;
-    width: 70%;
+    width: 80%;
     font-size: 14px;
     line-height: 20px;
     color: #fff;
@@ -36,15 +41,30 @@
     padding-left: 12px;
     text-decoration: none;
 }
-
+#top-articles .top-pic{
+    right: 0px;
+    top: 0px;
+}
 /******************************************** 正文列表部分 **********************************************/
-#main-articles li a img{
+#main-articles li .article-img img{
     cursor: pointer;
     transition: all 0.6s;
 }
 
-#main-articles li a img:hover{
+#main-articles li .article-img img:hover{
     transform:scale(1.05);
+}
+
+#main-articles li .article-cate{
+    z-index: 999;
+    background-color:#005cbf;
+}
+
+#main-articles .media-body h6 a{
+    color: #1e7e34;
+}
+#main-articles .media-body h6 a:hover{
+    color: #5cb85c;
 }
 
 </style>
@@ -53,7 +73,7 @@
 {% block main %}
     <!-- 顶部海报栏 -->
 
-    <div class="card mb-2">
+    <div class="card mb-2" id="top-post">
         <div class="row no-gutters">
             <div class="col-xl-8">
                 <a href="#"><img src="{% static 'imgs/2.png' %}" class="card-img" alt="..."></a>
@@ -61,9 +81,9 @@
             <div class="col-xl-4">
                 <div class="card-body px-3 py-3">
                     <h6 class="card-title border-bottom border-success font-weight-bold lh-25-oli">
-                        <a href="#" class="card-link">{{ hot_articles.1.title }}框架是个开机后季卡三极管</a>
+                        <a href="#" class="card-link">【推荐】{{ hot_articles.1.title }}框架是个开机后季卡三极管</a>
                     </h6>
-                    <div class="mb-1 d-none d-sm-block">{{ hot_articles.1.desc }}可以时不时跟换看世界观南汉山城开心呢女合并卡寄过来那家伙就考虑到桑看了三年个...</div>
+                    <div class="text-muted mb-1 d-none d-sm-block">{{ hot_articles.1.desc }}可以时不时跟换看世界观南汉山城开心呢女合并卡寄过来那家伙就考虑到桑看了三年个...</div>
                     <a href="#" class="btn btn-secondary btn-sm mb-3 d-none d-sm-inline-block" role="button" aria-pressed="true">详情...</a>
                     <div class="overflow-hidden">
                         <img src="{% static 'imgs/github.png' %}" class="w-20-oli mw-35-oli float-left">
@@ -78,17 +98,20 @@
     </div>
 
     <!-- 置顶文章部分 -->
-    <div class="row mx-0 mb-4 ml-n2 position-relative" id="top-articles">
-        <div class="col px-0 ml-2">
+    <div class="row mx-0 mb-4 ml-n2" id="top-articles">
+        <div class="col px-0 ml-2 position-relative overflow-hidden">
             <img src="{% static "/imgs/3.png" %}" class="w-100" alt="">
-            <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历看看在哪里，分享一下我的工作经历看看在哪里，分享一下我的工作经历</a>
+            <img src="{% static "/imgs/TOP.png" %}" class="position-absolute top-pic" alt="">
+            <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历看看在哪里</a>
         </div>
-        <div class="col px-0 ml-2">
+        <div class="col px-0 ml-2 position-relative overflow-hidden">
             <img src="{% static "/imgs/1.png" %}" class="w-100" alt="">
+            <img src="{% static "/imgs/TOP.png" %}" class="position-absolute top-pic" alt="">
             <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历</a>
         </div>
-        <div class="col px-0 ml-2 d-none d-sm-block">
+        <div class="col px-0 ml-2 d-none d-sm-block position-relative overflow-hidden">
             <img src="{% static "/imgs/3.png" %}" class="w-100" alt="">
+            <img src="{% static "/imgs/TOP.png" %}" class="position-absolute top-pic" alt="">
             <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历</a>
         </div>
     </div>
@@ -97,8 +120,9 @@
     {% for article in article_ls %}
     <ul class="list-unstyled" id="main-articles">
         <li class="media my-3 bg-white py-3 px-3">
-            <div class="mr-3 align-self-center w-32-oli">
-                <a href="#" target="_blank">
+            <div class="mr-3 align-self-center w-32-oli position-relative">
+                <a class="btn btn-primary btn-sm position-absolute article-cate" href="#" role="button">{{ article.category.name }}</a>
+                <a href="#" class="article-img" target="_blank">
                     <img src="{% static "/imgs/3.png" %}" class="w-100" alt="...">
                 </a>
             </div>
@@ -106,9 +130,9 @@
                 <h6 class="mt-0 mb-2 border-bottom font-weight-bold text-truncate lh-30-oli">
                     <a href="{% url 'article-detail' article.id %}" target="_blank" class="text-decoration-none" title="{{ article.title }}">{{ article.title }}</a>
                 </h6>
-                <p class="d-none d-sm-block mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
-                <p class="d-block d-sm-none mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
-                <div class="lh-20-oli">
+                <p class="text-muted d-none d-sm-block mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
+                <p class="text-muted d-block d-sm-none mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
+                <div class="lh-20-oli text-muted">
                     <img class="d-inline-block" style="width: 20px" src="{% static 'imgs/github.png' %}" alt="">
                     <a href="/">{{ article.owner }}</a>
                     <span class="pl-3 d-none d-lg-inline"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ article.time_short_format }}</span>
@@ -119,20 +143,21 @@
         </li>
     </ul>
     {% endfor %}
+
+    <!-- 文末翻页部分 -->
+    <div class="text-center f-18 my-3">
+        {% if page_obj %}
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+        {% endif %}
+        第 {{ page_obj.number }}/{{ paginator.num_pages }} 页
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+        {% endif %}
+        {% endif %}
+    </div>
+
 {% endblock %}
-
-
-{##}
-{#    {% if page_obj %}#}
-{#        {% if page_obj.has_previous %}#}
-{#            <a href="?page={{ page_obj.previous_page_number }}">上一页</a>#}
-{#        {% endif %}#}
-{#        Page {{ page_obj.number }} of {{ paginator.num_pages }}.#}
-{#        {% if page_obj.has_next %}#}
-{#            <a href="?page={{ page_obj.next_page_number }}">下一页</a>#}
-{#        {% endif %}#}
-{#    {% endif %}#}
-{#{% endblock %}#}
 
 
 

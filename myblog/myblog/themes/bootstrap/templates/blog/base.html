@@ -18,8 +18,8 @@
     </head>
     <body>
         <!-- 导航条开始 -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top navbar-oliver">  <!-- bg白 -->
-            <div class="container nav_style_oliver">
+        <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top py-2">  <!-- bg白 -->
+            <div class="container f-18">
                 <a class="navbar-brand" href="/"><i id="logo-oliver">Blog of OliverTian</i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -34,7 +34,7 @@
                     {% endfor %}
                     </ul>
 
-                    <form class="form-inline my-2 my-lg-0 pr-lg-2" role="search" action='/search/' method='GET'>
+                    <form class="d-none d-lg-inline-block form-inline my-2 my-lg-0 pr-lg-2" role="search" action='/search/' method='GET'>
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-success my-2 my-sm-0" type="submit">搜索</button>
                     </form>
@@ -52,8 +52,6 @@
         </nav>
         <!-- 导航条结束-->
 
-
-
         <!-- 内容主体+侧边栏 开始 -->
         <div class="container">
             <div class="row">
@@ -63,21 +61,21 @@
                 </div>
                 <div class="col-md-4">  <!-- 侧栏部分 -->
                    <!--个人空间-->
-                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-lg-block" id="private-oliver">
+                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-md-block" id="private-oliver">
                         <div class="card-header bg-white px-0">
-                            <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
+                            <strong class="f-16"><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
                         </div>
                         <div class="card-body px-0 pt-3 pb-1">
                             <div class="row text-center">
                                 <div class="col">
                                     <a href="https://github.com/oliverstian" target="_blank" title="进入博主的Github查看博客源码">  <!-- target='_blank'表示在新窗口打开链接 -->
-                                        <img style="max-width:40px" alt="博主的github" src="{% static 'imgs/github.png' %}">
+                                        <img class="mw-30percent" alt="博主的github" src="{% static 'imgs/github.png' %}">
                                         <p class="mt-2">Github</p>
                                     </a>
                                 </div>
                                 <div class="col">
                                     <a href="https://home.cnblogs.com/u/olivertian/" target="_blank" title="博主的博客园">  <!-- target='_blank'表示在新窗口打开链接 -->
-                                        <img style="max-width:40px" alt="博主的博客园" src="{% static 'imgs/cnblogs.jpg' %}">
+                                        <img class="mw-30percent" alt="博主的博客园" src="{% static 'imgs/cnblogs.jpg' %}">
                                         <p class="mt-2">博客园</p>
                                     </a>
                                 </div>
@@ -88,17 +86,17 @@
                     <!-- 热门文章 -->
                     <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="hot-article-oliver">
                         <div class="card-header bg-white px-0">
-                            <strong><i class="fa fa-book mr-2 f-17"></i>热门文章</strong>
+                            <strong class="f-16"><i class="fa fa-book mr-2 f-17"></i>热门文章</strong>
                         </div>
                         <div class="list-group list-group-flush">
                             {% for hot_article in hot_articles %}
                             <a href="{% url 'article-detail' hot_article.id %}" class="pl-0 pr-0 list-group-item">
-                                <div class="row no-gutters" style="height: 80px">
-                                    <div class="col-md-4">
-                                        <img class="card-img img-tiled-oliver" src="{% static 'imgs/1.png' %}">
+                                <div class="row no-gutters">
+                                    <div class="col-lg-4 align-self-center">
+                                        <img class="card-img w-100" src="{% static 'imgs/1.png' %}">
                                     </div>
-                                    <div class="col-md-8 pl-2">
-                                        <h6 class="font-weight-bold">{{ hot_article.title }}</h6>
+                                    <div class="col-lg-8 pl-2">
+                                        <h6 class="font-weight-bold f-14 lh-20-oli">{{ hot_article.title }}加长文章标题看看能有个更多长哦</h6>
                                         <span class="text-muted mr-2">{{ hot_article.time_short_format }}</span>
                                         <span class="text-muted">阅读({{ hot_article.pv }})</span>
                                     </div>
@@ -111,7 +109,7 @@
                     <!--标签云-->
                     <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="tag-card">
                         <div class="card-header bg-white px-0">
-                            <strong><i class="fa fa-tags mr-2 f-17"></i>标&nbsp;签&nbsp;云</strong>
+                            <strong class="f-16"><i class="fa fa-tags mr-2 f-17"></i>标&nbsp;签&nbsp;云</strong>
                         </div>
                         <div class="card-body px-0 py-3">
                             <div class="tag-cloud">
@@ -122,11 +120,11 @@
                         </div>
                     </div>
 
-                    <!--友链-->
+                    <!--友链，仅限于桌面电脑，以防友方没有响应式布局 -->
                     <div class="d-none d-lg-block">
                         <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="friends-link-olver">
                             <div class="card-header bg-white px-0">
-                                <strong><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>
+                                <strong class="f-16"><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>
                             </div>
 
                             <div class="card-body px-2">
@@ -141,39 +139,11 @@
             </div>
         </div>
         <!-- 内容主体+侧边栏 结束 -->
+    </body>
 
-{#    <div class="container main">#}
-{#        <div class="row">#}
-{#            <div class="col-xl-9 post-list">#}
-{#            {% block main %}#}
-{#            {% endblock %}#}
-{#            </div>#}
-{#            <div class="col-xl-3">#}
-{#                {% block sidebar %}#}
-{#                    {% for sidebar in sidebars %}#}
-{#                    <div class="card sidebar">#}
-{#                        <div class="card-body">#}
-{#                            <h4 class="card-title">{{ sidebar.title }}</h4>#}
-{#                            {{ sidebar.content_html }}#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    {% endfor %}#}
-{#                {% endblock %}#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-
-    <footer class="footer">
+    <footer class="footer text-center">
         {% block footer %}
-        <div class="container">
-            <hr/>
-            <nav class="nav category">
-            {% for cate in normal_category %}
-            <a href="{% url 'category-list' cate.id %}" class="nav-link">{{ cate.name }}</a>
-            {% endfor %}
-            </nav>
-        </div>
-        <div class="container power">
+        <div class="container-fluid mt-4">
             <span class="text-muted">Power by olivertian</span>
         </div>
         {% endblock %}
