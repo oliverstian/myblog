@@ -1,4 +1,6 @@
 import mistune
+import markdown
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -83,6 +85,7 @@ class Article(models.Model):
     desc = models.CharField(max_length=1024, blank=True, verbose_name="摘要")
     content = models.TextField(verbose_name="正文", help_text="必须为MarkDown格式")
     content_html = models.TextField(verbose_name="正文HTML代码", blank=True, editable=False)
+    content_toc = models.TextField(verbose_name="文章目录", blank=True, editable=False)
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
                                          choices=STATUS_ITEM, verbose_name="状态")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="分类")
@@ -98,7 +101,18 @@ class Article(models.Model):
         ordering = ["-id"]  # 根据id进行降序排列
 
     def save(self, *args, **kwargs):
-        self.content_html = mistune.markdown(self.content)  # 展示文章用这个字段。编辑文章用Markdown，展示用HTML格式
+        """
+        保存两份的好处是，博客写操作往往只有很少次（写、改），而读有很多次，如果数据库中保存的
+        是Markdown格式，则每次取数据都要转换成HTML，这样不科学，所以最好是写入时转换一次
+        """
+        # self.content_html = mistune.markdown(self.content)  # 展示文章用这个字段。编辑文章用Markdown，展示用HTML格式
+        md = markdown.Markdown(extensions=[
+                                    'markdown.extensions.extra',
+                                    'markdown.extensions.codehilite',
+                                    'markdown.extensions.toc',
+                                    ])
+        self.content_html = md.convert(self.content)
+        self.content_toc = md.toc  # 文章目录
         super(Article, self).save(*args, **kwargs)
 
     def time_short_format(self):

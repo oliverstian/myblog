@@ -5,23 +5,68 @@
 <link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+
+<style>
+.article-toc{
+    color: #005cbf;
+    padding-top: 30px;
+    position: fixed;
+    max-width: 40%;
+}
+.toc ul {
+    padding-left: 30px;
+}
+.toc >ul >li {
+    line-height: 30px;
+    list-style-type: upper-roman;
+}
+.toc >ul >li >ul >li {
+    list-style-type: decimal;
+}
+
+.toc >ul >li >ul >li>ul >li {
+    list-style-type: lower-alpha;
+}
+
+.toc a:hover{
+    color: #ba8b00;
+    text-decoration:none;
+}
+
+</style>
 {% endblock %}
 
 {% block main %}
-    {% if article %}
-    <h1>{{ article.title }}</h1>
-    <div>
-        <span>分类：{{ article.category.name }}</span>
-        <span>作者：{{ article.owner.username }}</span>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+
+                <!-- 正文部分 -->
+                {% if article %}
+                <h1>{{ article.title }}</h1>
+                <div>
+                    <span>分类：{{ article.category.name }}</span>
+                    <span>作者：{{ article.owner.username }}</span>
+                </div>
+                <hr>
+                <p>
+                    {% autoescape off %}
+                    {{ article.content_html }} <!-- 编辑文章用Markdown格式，展示用HTML格式 -->
+                    {% endautoescape %}
+                </p>
+                {% endif %}
+                {% comment_block request.path %}   <!--在需要显示评论的地方加入这个标签-->
+            </div>
+
+            <!-- 目录部分 -->
+            <div class="col-lg-3">
+                <div class="article-toc f-18">
+                    {{ article.content_toc|safe }}
+                </div>
+            </div>
+
+        </div>
     </div>
-    <hr>
-    <p>
-        {% autoescape off %}
-        {{ article.content_html }} <!-- 编辑文章用Markdown格式，展示用HTML格式 -->
-        {% endautoescape %}
-    </p>
-    {% endif %}
-    {% comment_block request.path %}   <!--在需要显示评论的地方加入这个标签-->
 {% endblock %}
 
 

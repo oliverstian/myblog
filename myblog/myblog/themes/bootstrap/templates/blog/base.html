@@ -7,9 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- 上述三个必须放开头 -->
 
-        <title>{% block title %}首页{% endblock %}- oliver个人博客</title>
+        <title>{% block title %}首页{% endblock %}oliver个人博客</title>
+        <link rel="shortcut icon" href="{% static 'imgs/favicon.ico'%}" type="image/x-icon"/>
+
         <link rel="stylesheet" href="{% static 'bootstrap-4.3.1-dist/css/bootstrap.css' %}">
-        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
         <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
 
         {% block extra_head %}
@@ -27,6 +29,9 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">首页</a>
+                        </li>
                     {% for cate in nav_category %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
@@ -52,93 +57,9 @@
         </nav>
         <!-- 导航条结束-->
 
-        <!-- 内容主体+侧边栏 开始 -->
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 pr-0">  <!-- 内容部分 -->
-                {% block main %}
-                {% endblock %}
-                </div>
-                <div class="col-md-4">  <!-- 侧栏部分 -->
-                   <!--个人空间-->
-                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-md-block" id="private-oliver">
-                        <div class="card-header bg-white px-0">
-                            <strong class="f-16"><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
-                        </div>
-                        <div class="card-body px-0 pt-3 pb-1">
-                            <div class="row text-center">
-                                <div class="col">
-                                    <a href="https://github.com/oliverstian" target="_blank" title="进入博主的Github查看博客源码">  <!-- target='_blank'表示在新窗口打开链接 -->
-                                        <img class="mw-30percent" alt="博主的github" src="{% static 'imgs/github.png' %}">
-                                        <p class="mt-2">Github</p>
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <a href="https://home.cnblogs.com/u/olivertian/" target="_blank" title="博主的博客园">  <!-- target='_blank'表示在新窗口打开链接 -->
-                                        <img class="mw-30percent" alt="博主的博客园" src="{% static 'imgs/cnblogs.jpg' %}">
-                                        <p class="mt-2">博客园</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        {% block main %}
+        {% endblock %}
 
-                    <!-- 热门文章 -->
-                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="hot-article-oliver">
-                        <div class="card-header bg-white px-0">
-                            <strong class="f-16"><i class="fa fa-book mr-2 f-17"></i>热门文章</strong>
-                        </div>
-                        <div class="list-group list-group-flush">
-                            {% for hot_article in hot_articles %}
-                            <a href="{% url 'article-detail' hot_article.id %}" class="pl-0 pr-0 list-group-item">
-                                <div class="row no-gutters">
-                                    <div class="col-lg-4 align-self-center">
-                                        <img class="card-img w-100" src="{% static 'imgs/1.png' %}">
-                                    </div>
-                                    <div class="col-lg-8 pl-2">
-                                        <h6 class="font-weight-bold f-14 lh-20-oli">{{ hot_article.title }}加长文章标题看看能有个更多长哦</h6>
-                                        <span class="text-muted mr-2">{{ hot_article.time_short_format }}</span>
-                                        <span class="text-muted">阅读({{ hot_article.pv }})</span>
-                                    </div>
-                                </div>
-                            </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <!--标签云-->
-                    <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="tag-card">
-                        <div class="card-header bg-white px-0">
-                            <strong class="f-16"><i class="fa fa-tags mr-2 f-17"></i>标&nbsp;签&nbsp;云</strong>
-                        </div>
-                        <div class="card-body px-0 py-3">
-                            <div class="tag-cloud">
-                                {% for tag in all_tags %}
-                                <a href="{% url 'tag-list' tag.id %}" class="tags f-16" title="共{{ tag.article_nums }}篇文章">{{ tag.name }}（{{ tag.article_nums }}）</a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--友链，仅限于桌面电脑，以防友方没有响应式布局 -->
-                    <div class="d-none d-lg-block">
-                        <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="friends-link-olver">
-                            <div class="card-header bg-white px-0">
-                                <strong class="f-16"><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>
-                            </div>
-
-                            <div class="card-body px-2">
-                                {% for friend_link in friend_links %}
-                                <a href="{{ friend_link.href }}" target="_blank" class="f-16">{{ friend_link.title }}</a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- 内容主体+侧边栏 结束 -->
     </body>
 
     <footer class="footer text-center">

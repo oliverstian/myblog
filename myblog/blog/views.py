@@ -11,42 +11,6 @@ from comment.forms import CommentForm
 
 from django.core.cache import cache
 
-"""  这两个视图函数没有使用，可用于参考和与类视图对比
-def article_list(request, category_id=None, tag_id=None):
-    tag = None
-    category = None
-
-    if tag_id:
-        article_ls, tag = Article.get_by_tag(tag_id)
-    elif category_id:
-        article_ls, category = Article.get_by_category(category_id)
-    else:
-        article_ls = Article.latest_article()
-
-    context = {
-        "tag": tag,
-        "category": category,
-        "article_ls": article_ls,
-        "Sidebars": SideBar.get_all(),
-    }
-    context.update(Category.get_navs())
-
-    return render(request, "blog/list.html", context=context)
-
-
-def article_detail(request, article_id=None):
-    try:
-        article = Article.objects.get(id=article_id)
-    except Article.DoesNotExist:
-        article = None
-
-    context = {
-        "article": article,
-        "Sidebars": SideBar.get_all(),
-    }
-    return render(request, "blog/detail.html", context=context)
-"""
-
 
 class CommonViewMixin:
     """把侧边栏数据获取放到context中，因为很多页面都共用这些数据"""
