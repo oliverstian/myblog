@@ -162,7 +162,7 @@
                         <div class="card-body px-0 py-3">
                             <div class="tag-cloud">
                                 {% for tag in all_tags %}
-                                <a href="{% url 'tag-list' tag.id %}" class="tags f-16" title="共{{ tag.article_nums }}篇文章">{{ tag.name }}（{{ tag.article_nums }}）</a>
+                                <a href="{% url 'tag-list' tag.id %}" class="tags" title="共{{ tag.article_nums }}篇文章">{{ tag.name }}（{{ tag.article_nums }}）</a>
                                 {% endfor %}
                             </div>
                         </div>

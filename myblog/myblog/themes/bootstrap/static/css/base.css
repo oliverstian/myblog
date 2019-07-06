@@ -42,6 +42,9 @@ a{
 .f-14{
     font-size: 14px !important;
 }
+.f-13{
+    font-size: 13px !important;
+}
 .f-12{
     font-size: 12px !important;
 }
@@ -86,4 +89,62 @@ a{
 
 .w-85-oli {
   width: 85% !important;
+}
+
+/*********************************************** 标签云 ***************************************/
+.tag-cloud {
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    text-align: left;
+}
+.tags {
+    font-size: 16px;
+    color:#fff;
+    padding: .08rem .4rem;
+    float: left;
+    text-align: center;
+    margin: .3rem;
+    transition: all .5s;  /* 所有属性（all）在0.5s内产生过渡效果 */
+}
+
+.tag-text{
+    font-size: 18px;
+    padding: .08rem 0rem;
+    float: left;
+    text-align: center;
+    margin: .3rem;
+}
+/*云标签颜色*/
+.tags:nth-child(9n+1) {
+    background:#78BBE6;
+}
+.tags:nth-child(9n+2){
+    background:#FF895D;
+}
+.tags:nth-child(9n+3) {
+    background:#A3DE83;
+}
+.tags:nth-child(9n+4) {
+    background:#00BBF0;
+}
+.tags:nth-child(9n+5) {
+    background:#FF2E63;
+}
+.tags:nth-child(9n+6) {
+    background:#0D7377;
+}
+.tags:nth-child(9n+7) {
+    background:#AC005D;
+}
+.tags:nth-child(9n+8) {
+    background:#0881A3;
+}
+.tags:nth-child(9n+9) {
+    background:#EDA045;
+}
+.tags:hover {
+    color:#fff;
+    background:#333;
+    text-decoration: none;
 }

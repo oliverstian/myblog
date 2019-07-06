@@ -1,5 +1,5 @@
 {% extends "./base.html" %}
-{% load comment_block %}
+{% load static comment_block %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
@@ -8,7 +8,7 @@
 
 <style>
 .article-toc{
-    color: #005cbf;
+    color: #007bff;
     padding-top: 30px;
     position: fixed;
     max-width: 40%;
@@ -33,6 +33,29 @@
     text-decoration:none;
 }
 
+.card .card-body .detail-title{
+    color: #1e7e34;
+}
+
+nav ol a{
+    color: #007bff;
+}
+nav ol a:hover{
+    color: #ba8b00;
+    text-decoration: none;
+}
+
+.card .card-body .prenext{
+    list-style: none;
+    line-height: 30px;
+}
+.card .card-body .prenext a{
+    color: #007bff;
+}
+.card .card-body .prenext a:hover{
+    text-decoration: none;
+    color: #ba8b00;
+}
 </style>
 {% endblock %}
 
@@ -40,22 +63,70 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-white border-0 rounded-0 f-16">
+                        <li class="breadcrumb-item"><a href="#">首页</a></li>
+                        <li class="breadcrumb-item"><a href="#">{{ article.category.name }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
+                    </ol>
+                </nav>
 
-                <!-- 正文部分 -->
-                {% if article %}
-                <h1>{{ article.title }}</h1>
-                <div>
-                    <span>分类：{{ article.category.name }}</span>
-                    <span>作者：{{ article.owner.username }}</span>
+                <div class="card w-100">
+                    <div class="card-body">
+                        {% if article %}
+                        <h4 class="font-weight-bold card-title text-center border-bottom my-0 py-4 detail-title">{{ article.title }}</h4>
+                        <div class="text-center text-muted f-13 my-4">
+                            <div class="d-inline">
+                                <img class="d-none d-md-inline" src="{% static 'imgs/github.png'%}" style="width: 25px" alt="">
+                                <a href="#">{{ article.owner.username }}</a>
+                            </div>
+                            <span class="pl-md-4"><i class="fa fa-clock-o d-none d-md-inline" aria-hidden="true"></i> {{ article.time_short_format }}</span>
+                            <span class="pl-md-4"><i class="fa fa-eye d-none d-md-inline" aria-hidden="true"></i> 阅读({{ article.pv }})</span>
+                            <span class="pl-md-4"><i class="fa fa-comment d-none d-md-inline" aria-hidden="true"></i> 评论({{ article.pv }})</span>
+                        </div>
+                        <div>
+                            <p>
+                                {% autoescape off %}
+                                {{ article.content_html }} <!-- 编辑文章用Markdown格式，展示用HTML格式 -->
+                                {% endautoescape %}
+                            </p>
+                        </div>
+                        <div class="tag-cloud mt-3">
+                            <span class="tag-text">标签：</span>
+                            {% for tag in article.tag.all %}
+                                <a class="tags" href="{% url 'tag-list' tag.id %}">{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
+                        <ul class="prenext mt-4 f-18">
+                            <li class="">
+                                <span>上一篇:</span>
+                                <a href="">蔡英文英文很菜</a>
+                            </li>
+                            <li>
+                                <span>下一篇:</span>
+                                <a href="">没什么好写的</a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </div>
                 </div>
-                <hr>
-                <p>
-                    {% autoescape off %}
-                    {{ article.content_html }} <!-- 编辑文章用Markdown格式，展示用HTML格式 -->
-                    {% endautoescape %}
-                </p>
-                {% endif %}
                 {% comment_block request.path %}   <!--在需要显示评论的地方加入这个标签-->
+
+{#                <!-- 正文部分 -->#}
+{#                {% if article %}#}
+{#                <h1>{{ article.title }}</h1>#}
+{#                <div>#}
+{#                    <span>分类：{{ article.category.name }}</span>#}
+{#                    <span>作者：{{ article.owner.username }}</span>#}
+{#                </div>#}
+{#                <hr>#}
+{#                <p>#}
+{#                    {% autoescape off %}#}
+{#                    {{ article.content_html }} <!-- 编辑文章用Markdown格式，展示用HTML格式 -->#}
+{#                    {% endautoescape %}#}
+{#                </p>#}
+{#                {% endif %}#}
+{#                {% comment_block request.path %}   <!--在需要显示评论的地方加入这个标签-->#}
             </div>
 
             <!-- 目录部分 -->
