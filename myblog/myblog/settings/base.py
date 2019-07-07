@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "blog",
     "comment",
     "config",
+    "user",
     "rest_framework",
 ]
 
@@ -99,6 +100,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# django认证系统使用的模型类。加上这个设置，用户管理相关信息就会保存在自己创建的User表中
+# 而不是Django内置的表中
+AUTH_USER_MODEL = 'user.User'
+LOGIN_URL = "/user/login"
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

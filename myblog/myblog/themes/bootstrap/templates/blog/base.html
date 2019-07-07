@@ -20,14 +20,14 @@
     </head>
     <body>
         <!-- 导航条开始 -->
-        <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top py-2">  <!-- bg白 -->
+        <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top py-0">  <!-- bg白 -->
             <div class="container f-18">
                 <a class="navbar-brand" href="/"><i id="logo-oliver">Blog of OliverTian</i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse py-2" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="/">首页</a>
@@ -44,14 +44,30 @@
                         <button class="btn btn-success my-2 my-sm-0" type="submit">搜索</button>
                     </form>
 
+                    {% if user.is_authenticated %}
                     <ul class="navbar-nav mr-sm-0">  <!-- mr-sm-0表示margin right 0px -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">登陆</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">注册</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{{ user.username }}，欢迎回来！">
+                                <img class="avatar rounded-circle" src="{% static 'imgs/default.png' %}" alt="{{ user.username }}" style="max-width: 35px">
+                            </a>
+                            <div class="dropdown-menu pt-0 my-0" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'userinfo' %}">个人信息</a>
+                                <a class="dropdown-item" href="#">消息</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}">退出</a>
+                            </div>
                         </li>
                     </ul>
+                    {% else %}
+                    <ul class="navbar-nav mr-sm-0">  <!-- mr-sm-0表示margin right 0px -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">登陆</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">注册</a>
+                        </li>
+                    </ul>
+                    {% endif %}
+
                 </div>
             </div>
         </nav>
@@ -62,7 +78,7 @@
 
     </body>
 
-    <footer class="footer text-center">
+    <footer class="footer text-center position-sticky mb-3">
         {% block footer %}
         <div class="container-fluid mt-4">
             <span class="text-muted">Power by olivertian</span>
@@ -72,5 +88,6 @@
 
     <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>  <!-- bootstrap依赖jQuery，比如上面的data-toggle不导入jQuery就无法下拉 -->
     <script src="{% static 'bootstrap-4.3.1-dist/js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/base.js' %}"></script>
     </body>
 </html>

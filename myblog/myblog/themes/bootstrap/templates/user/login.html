@@ -1,0 +1,40 @@
+{% extends "../blog/base.html" %}
+
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-lg-3"></div>  <!-- 小屏幕时两侧的消失 -->
+            <div class="col-12 col-md-8 col-lg-6"> <!-- 小屏幕时中间的占12格 -->
+                <div class="card px-3 mx-3 mx-md-5">
+                    <div class="card-body">
+                        <span style="color: #ff0000">{{ msg }}</span>
+                        <h5 class="card-title border-bottom text-center pb-3">登陆</h5>
+                        <form action="{% url 'login' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="user_name">用户名：</label>
+                                <input type="text" class="form-control" name="user_name" {{ username }} id="user_name" aria-describedby="emailHelp" placeholder="请输入用户名">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">密码：</label>
+                                <input type="password" class="form-control" name="pwd" id="pwd" placeholder="请输入密码">
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="Check" {{ checked }} name="remember">
+                                <label class="form-check-label" for="Check">记住我</label>
+                            </div>
+                            <div class="overflow-hidden">
+                                <a class="d-inline-block float-left text-muted" style="font-size: 16px;line-height: 38px" href="#">忘记密码了？</a>
+                                <button type="submit" class="btn btn-primary float-right">登陆</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-lg-3"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

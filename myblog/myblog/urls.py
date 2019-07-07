@@ -25,6 +25,10 @@ from config.views import (
 from comment.views import (
     CommentView,
 )
+from user.views import (
+    RegisterView, LoginView, LogoutView,
+    UserInfoView,
+)
 # from blog.apis import article_list, ArticleList
 from rest_framework.routers import DefaultRouter
 from blog.apis import ArticleViewSet
@@ -44,6 +48,11 @@ urlpatterns = [
     re_path(r"^author/(?P<owner_id>\d+)/$", AuthorView.as_view(), name="author"),
     re_path(r"^links/$", LinkListView.as_view(), name="links"),
     re_path(r"comment/$", CommentView.as_view(), name="comment"),
+
+    re_path(r"register/$", RegisterView.as_view(), name="register"),
+    re_path(r"login/$", LoginView.as_view(), name="login"),
+    re_path(r"logout/$", LogoutView.as_view(), name="logout"),
+    re_path(r"userinfo/$", UserInfoView.as_view(), name="userinfo"),
 
     # re_path(r"^api/article/", article_list, name="article-list"),
     # re_path(r"^api/article/", ArticleList.as_view(), name="article-list")

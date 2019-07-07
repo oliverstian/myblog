@@ -22,16 +22,14 @@ a{
     color: #0f0f0f;
 }
 
-.navbar #navbarSupportedContent ul a:hover {
-    text-decoration: none;
-    color: #007bff;
-}
-
 #logo-oliver{
     font-size: 20px;
     color: #2aabd2;
 }
 
+#navbarSupportedContent #navbarDropdown:hover{
+    aria-expanded:true;
+}
 /************************************************ 字体 ****************************************/
 .f-18{
     font-size: 18px !important;

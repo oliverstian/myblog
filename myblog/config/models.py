@@ -17,7 +17,7 @@ class Link(models.Model):  # 友链
                                          verbose_name="状态")
     weight = models.PositiveIntegerField(default=1, choices=zip(range(1, 6), range(1, 6)),
                                          verbose_name="权重", help_text="权重越高展示越前")
-    owner = models.ForeignKey(User, verbose_name="作者", on_delete=models.CASCADE)
+    owner = models.ForeignKey("user.User", verbose_name="作者", on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
@@ -53,7 +53,7 @@ class SideBar(models.Model):
                                help_text="如果设置的不是HTML类型，可为空")
     status = models.PositiveIntegerField(default=STATUS_SHOW, choices=STATUS_ITEM,
                                          verbose_name="状态")
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="作者")
+    owner = models.ForeignKey("user.User", on_delete=models.CASCADE, verbose_name="作者")
     created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
