@@ -5,7 +5,9 @@
 <link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-
+    <script>
+        var child_btn_id = ""
+    </script>
 <style>
 .article-toc{
     color: #007bff;
@@ -56,6 +58,94 @@ nav ol a:hover{
     text-decoration: none;
     color: #ba8b00;
 }
+/************************************************ 评论区 ********************************************/
+#top-comment-area {
+    background-color:#f0f0f0;
+    border: 2px solid #ccd4d9
+}
+
+#top-comment-area h6 a {
+    color: #ff0000;
+ }
+
+#top-comment-area h6 a:hover {
+    color: #007bff;
+    text-decoration: none;
+ }
+
+#top-comment-text {
+    height: 68px;
+    resize: none;  /* 消除右下角的浏览器默认加上的几个细斜杠 */
+    font-size: 14px;
+    line-height: 18px;
+    overflow-y: auto;  /* 超过文本框显示滚动条 */
+    overflow-x: hidden;
+    display: block;  /* 可以把文本框默认的底部的阴影去掉，虽然不知道为什么 */
+    color: #808080;
+    outline: none;  /* 去除选中文本框时出现的边框 */
+}
+
+#top-comment-btn-wrap {
+    background-color:#fbfbfb;
+    position: relative;
+    width: 100%;
+    height: 38px
+}
+
+#top-comment-btn {
+    width: 90px;
+    height:100%;
+    position:absolute;
+    right: -1px;
+    bottom: -1px;
+    background-color: #00AAEE;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+}
+.border-bottom-shallow {
+    border-bottom: 1px solid #f0f0f0;
+}
+.border-top-shallow {
+    border-top: 1px solid #f0f0f0;
+}
+
+/***************** 子评论框 ***************/
+.child-comment-text {
+    height: 54px;
+    resize: none;  /* 消除右下角的浏览器默认加上的几个细斜杠 */
+    font-size: 14px;
+    line-height: 18px;
+    overflow-y: auto;  /* 超过文本框显示滚动条 */
+    overflow-x: hidden;
+    display: block;  /* 可以把文本框默认的底部的阴影去掉，虽然不知道为什么 */
+    color: #808080;
+    outline: none;  /* 去除选中文本框时出现的边框 */
+}
+.child-comment-btn-wrap {
+    background-color:#fbfbfb;
+    position: relative;
+    width: 100%;
+    height: 30px
+}
+.child-comment-btn {
+    width: 75px;
+    height:100%;
+    position:absolute;
+    right: -1px;
+    bottom: -1px;
+    background-color: #00AAEE;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+}
+
+/***************** 子评论框完 ******************/
+.rep-btn {
+    border: none;
+    background-color: transparent;
+    outline: none !important;  /* 去掉点击时出现的边框 */
+}
 </style>
 {% endblock %}
 
@@ -71,7 +161,7 @@ nav ol a:hover{
                     </ol>
                 </nav>
 
-                <div class="card w-100">
+                <div class="card w-100 mb-2">
                     <div class="card-body">
                         {% if article %}
                         <h4 class="font-weight-bold card-title text-center border-bottom my-0 py-4 detail-title">{{ article.title }}</h4>
@@ -110,23 +200,93 @@ nav ol a:hover{
                         {% endif %}
                     </div>
                 </div>
-                {% comment_block request.path %}   <!--在需要显示评论的地方加入这个标签-->
 
-{#                <!-- 正文部分 -->#}
-{#                {% if article %}#}
-{#                <h1>{{ article.title }}</h1>#}
-{#                <div>#}
-{#                    <span>分类：{{ article.category.name }}</span>#}
-{#                    <span>作者：{{ article.owner.username }}</span>#}
-{#                </div>#}
-{#                <hr>#}
-{#                <p>#}
-{#                    {% autoescape off %}#}
-{#                    {{ article.content_html }} <!-- 编辑文章用Markdown格式，展示用HTML格式 -->#}
-{#                    {% endautoescape %}#}
-{#                </p>#}
-{#                {% endif %}#}
-{#                {% comment_block request.path %}   <!--在需要显示评论的地方加入这个标签-->#}
+                <div class="card w-100">
+                    <div class="card-body text-center my-3 mx-3 px-0 py-0" id="top-comment-area">
+                        {% if not user.is_authenticated %}
+                        <h6 class="card-title my-0 py-4 f-18">您尚未登陆，请 <a href="{% url 'login' %}">登陆</a> 或 <a href="{% url 'register' %}">注册</a> 后评论</h6>
+                        {% else %}
+                        <textarea class="w-100 py-2 px-2 border-0 f-14" name="top_comment" id="top-comment-text" placeholder="来了老哥..."></textarea>
+                        <div id="top-comment-btn-wrap">
+                            <button type="button" id="top-comment-btn">评论一下</button>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body">
+                        <div class="f-16">
+                            <strong>{% total_user_num article %}人参与 | {% total_comment_num article %}条评论</strong>
+                        </div>
+                        <div>
+                        {% total_parent_comment article as comments %}
+
+                        <ul class="list-unstyled mt-2">
+                            {% for comment in comments %}
+                            <li class="media border-top pt-2">
+                                <img src="{% static 'imgs/default.png' %}" class="mr-3" alt="..." style="width: 40px">
+                                <div class="media-body d-block">
+                                    <div class="overflow-hidden">
+                                        <button class="float-right text-muted rep-btn" data-repid="{{ comment.id }}" data-repuser="{{ comment.author }}">回复</button>
+                                        <span class="float-left">
+                                            <strong class="f-16">{{ comment.author }}</strong>
+                                            {% if comment.author.is_superuser %}
+                                            <small class="text-danger">[博主]</small>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="text-muted">{{ forloop.counter }}楼 {% shorttime comment.created_time %}</div>
+                                </div>
+                            </li>
+                            <div class="py-2 f-16">
+                                {{ comment.content }}
+                            </div>
+                            <div class="border d-none comment-btn-all" id="comment-btn-{{ comment.id }}">
+                                <textarea class="w-100 py-2 px-2 border-0 f-14 child-comment-text" name="parent_comment" placeholder="回复@{{ comment.author }}"></textarea>
+                                <div class="child-comment-btn-wrap">
+                                    <button type="button" class="child-comment-btn">回复</button>
+                                </div>
+                            </div>
+
+                            {% total_child_comment comment as child_comments %}
+
+                            {% if child_comments %}
+                                <ul class="list-unstyled ml-5">
+                                {% for child_comment in child_comments %}
+                                    <li class="media border-top-shallow pt-2">
+                                        <img src="{% static 'imgs/default.png' %}" class="mr-3" alt="..." style="width: 40px">
+                                        <div class="media-body d-block">
+                                            <div class="overflow-hidden">
+                                                <button class="float-right text-muted rep-btn" data-repid="{{ child_comment.id }}" data-repuser="{{ child_comment.author }}">回复</button>
+                                                <span class="float-left">
+                                                    <strong class="f-16">{{ child_comment.author }}</strong>
+                                                    {% if child_comment.author.is_superuser %}
+                                                    <small class="text-danger">[博主]</small>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="py-2 f-16">
+                                        <span style="color: red">回复@{{ child_comment.rep_to.author }}</span>:{{ child_comment.content }}
+                                    </div>
+                                    <div class="border d-none comment-btn-all" id="comment-btn-{{ child_comment.id }}">
+                                        <textarea class="w-100 py-2 px-2 border-0 f-14 child-comment-text" name="parent_comment" placeholder="回复@{{ child_comment.author }}"></textarea>
+                                        <div class="child-comment-btn-wrap">
+                                            <button type="button" class="child-comment-btn">回复</button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                </ul>
+
+                            {% endif %}
+
+                            {% empty %}
+                                还没有评论
+                            {% endfor %}
+                        </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- 目录部分 -->
@@ -135,7 +295,6 @@ nav ol a:hover{
                     {{ article.content_toc|safe }}
                 </div>
             </div>
-
         </div>
     </div>
 {% endblock %}

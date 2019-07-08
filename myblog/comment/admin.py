@@ -1,10 +1,10 @@
 from django.contrib import admin
-from comment.models import Comment
+from comment.models import ArticleComment
 
 
-@admin.register(Comment)
+@admin.register(ArticleComment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("target", "nickname", "content", "website", "created_time")
+    list_display = ("rep_to", "author", "content", "belong", "created_time")
 
 
 
