@@ -1,5 +1,5 @@
 {% extends "./base.html" %}
-{% load static %}
+{% load static comment_block %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/list.css' %}">
@@ -11,6 +11,9 @@
     {% endif %}
     {% if category %}
         分类页：{{ category.name }}
+    {% endif %}
+    {% if keyword %}
+        搜索页：{{ keyword }}
     {% endif %}
 {% endblock %}
 
@@ -82,10 +85,10 @@
                                 <p class="text-muted d-block d-sm-none mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
                                 <div class="lh-20-oli text-muted">
                                     <img class="d-inline-block" style="width: 20px" src="{% static 'imgs/github.png' %}" alt="">
-                                    <a href="/">{{ article.owner }}</a>
+                                    <a href="{% url 'author' article.owner.id  %}">{{ article.owner }}</a>
                                     <span class="pl-3 d-none d-lg-inline"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ article.time_short_format }}</span>
                                     <span class="pl-3"><i class="fa fa-eye" aria-hidden="true"></i> 阅读({{ article.pv }})</span>
-                                    <span class="pl-3 d-none d-md-inline"><i class="fa fa-comment" aria-hidden="true"></i> 评论({{ article.pv }})</span>
+                                    <span class="pl-3 d-none d-md-inline"><i class="fa fa-comment" aria-hidden="true"></i> 评论({% total_comment_num article %})</span>
                                 </div>
                             </div>
                         </li>
@@ -144,7 +147,7 @@
                                         <img class="card-img w-100" src="{% static 'imgs/1.png' %}">
                                     </div>
                                     <div class="col-lg-8 pl-2">
-                                        <h6 class="font-weight-bold f-14 lh-20-oli">{{ hot_article.title }}加长文章标题看看能有个更多长哦</h6>
+                                        <h6 class="font-weight-bold f-14 lh-20-oli">{{ hot_article.title }}</h6>
                                         <span class="text-muted mr-2">{{ hot_article.time_short_format }}</span>
                                         <span class="text-muted">阅读({{ hot_article.pv }})</span>
                                     </div>

@@ -34,7 +34,7 @@ class IndexView(CommonViewMixin, ListView):
     自动将选数据，渲染数据，返回response全包干了
     """
     queryset = Article.latest_article()  # 如果指定model=Article，等价于queryset = Article.objects.all()
-    paginate_by = 5
+    paginate_by = 10
     context_object_name = "article_ls"  # 模板中使用的变量名(即context={"article_ls": queryset})
     template_name = "blog/list.html"
 

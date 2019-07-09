@@ -23,7 +23,7 @@ from config.views import (
     LinkListView,
 )
 from comment.views import (
-    CommentView,
+    add_comment_view,
 )
 from user.views import (
     RegisterView, LoginView, LogoutView,
@@ -47,12 +47,13 @@ urlpatterns = [
     re_path(r"^search/$", SearchView.as_view(), name="search"),
     re_path(r"^author/(?P<owner_id>\d+)/$", AuthorView.as_view(), name="author"),
     re_path(r"^links/$", LinkListView.as_view(), name="links"),
-    re_path(r"comment/$", CommentView.as_view(), name="comment"),
+    re_path(r"comment/$", add_comment_view, name="add_comment"),
 
     re_path(r"register/$", RegisterView.as_view(), name="register"),
     re_path(r"login/$", LoginView.as_view(), name="login"),
     re_path(r"logout/$", LogoutView.as_view(), name="logout"),
     re_path(r"userinfo/$", UserInfoView.as_view(), name="userinfo"),
+
 
     # re_path(r"^api/article/", article_list, name="article-list"),
     # re_path(r"^api/article/", ArticleList.as_view(), name="article-list")

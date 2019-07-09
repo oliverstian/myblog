@@ -8,6 +8,10 @@
         <!-- 上述三个必须放开头 -->
 
         <title>{% block title %}首页{% endblock %}oliver个人博客</title>
+        <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>  <!-- bootstrap依赖jQuery，比如上面的data-toggle不导入jQuery就无法下拉 -->
+        <script src="{% static 'bootstrap-4.3.1-dist/js/bootstrap.js' %}"></script>
+        <script src="{% static 'js/base.js' %}"></script>
+
         <link rel="shortcut icon" href="{% static 'imgs/favicon.ico'%}" type="image/x-icon"/>
 
         <link rel="stylesheet" href="{% static 'bootstrap-4.3.1-dist/css/bootstrap.css' %}">
@@ -39,8 +43,8 @@
                     {% endfor %}
                     </ul>
 
-                    <form class="d-none d-lg-inline-block form-inline my-2 my-lg-0 pr-lg-2" role="search" action='/search/' method='GET'>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-none d-lg-inline-block form-inline my-2 my-lg-0 pr-lg-2" role="search" action="{% url 'search' %}" method='GET'>
+                        <input class="form-control mr-sm-2" type="search" name="keyword" {% if keyword %} placeholder="{{ keyword }}" {% else %} placeholder="search" {% endif %} aria-label="Search">
                         <button class="btn btn-success my-2 my-sm-0" type="submit">搜索</button>
                     </form>
 
@@ -86,9 +90,5 @@
         {% endblock %}
     </footer>
 
-    <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>  <!-- bootstrap依赖jQuery，比如上面的data-toggle不导入jQuery就无法下拉 -->
-    <script src="{% static 'bootstrap-4.3.1-dist/js/bootstrap.js' %}"></script>
-    <script src="{% static 'js/base.js' %}"></script>
-    <script src="{% static 'js/comment.js' %}"></script>
     </body>
 </html>

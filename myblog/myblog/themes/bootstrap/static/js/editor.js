@@ -148,5 +148,4 @@ $(function() {
     };
     sessionStorage.removeItem('rep_id');
 
-    $(".comment-body a").attr("target","_blank");
 })
