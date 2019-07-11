@@ -84,8 +84,9 @@ class Article(models.Model):
     title = models.CharField(max_length=255, verbose_name="标题")
     desc = models.CharField(max_length=1024, blank=True, verbose_name="摘要")
     content = models.TextField(verbose_name="正文", help_text="必须为MarkDown格式")
+    is_md = models.BooleanField(default=False, verbose_name="markdown")
     content_html = models.TextField(verbose_name="正文HTML代码", blank=True, editable=False)
-    content_toc = models.TextField(verbose_name="文章目录", blank=True, editable=False)
+    content_toc = models.TextField(verbose_name="文章目录", null=True, blank=True, editable=False)
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
                                          choices=STATUS_ITEM, verbose_name="状态")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="分类")
@@ -106,13 +107,17 @@ class Article(models.Model):
         是Markdown格式，则每次取数据都要转换成HTML，这样不科学，所以最好是写入时转换一次
         """
         # self.content_html = mistune.markdown(self.content)  # 展示文章用这个字段。编辑文章用Markdown，展示用HTML格式
-        md = markdown.Markdown(extensions=[
-                                    'markdown.extensions.extra',
-                                    'markdown.extensions.codehilite',
-                                    'markdown.extensions.toc',
-                                    ])
-        self.content_html = md.convert(self.content)
-        self.content_toc = md.toc  # 文章目录
+        if self.is_md:
+            md = markdown.Markdown(extensions=[
+                                        'markdown.extensions.extra',
+                                        'markdown.extensions.codehilite',
+                                        'markdown.extensions.toc',
+                                        ])
+            self.content_html = md.convert(self.content)
+            self.content_toc = md.toc  # 文章目录
+        else:
+            self.content_html = self.content
+            self.content_toc = None  # 简单根据这个判断有没有目录
         super(Article, self).save(*args, **kwargs)
 
     def time_short_format(self):

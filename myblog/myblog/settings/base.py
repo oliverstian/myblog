@@ -43,6 +43,11 @@ INSTALLED_APPS = [
     "config",
     "user",
     "rest_framework",
+    "xadmin",
+    "crispy_forms",
+    # "DjangoUeditor",
+    "ckeditor",
+    "ckeditor_uploader",  # 上传图片用
 ]
 
 MIDDLEWARE = [
@@ -130,10 +135,22 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "myblog", "themes", THEME, "static")
 ]
 
+# ckeditor配置项
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 800,
+        'tabSpaces': 4,
+        'extraPlugins': 'codesnippet',
+    },
+}
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+CKEDITOR_UPLOAD_PATH = "article_images"
 
-
-
+DEFAULT_FILE_STORAGE = 'myblog.storage.WatermarkStorage'  # 文件存储引擎
 
 
 

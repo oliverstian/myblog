@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+import xadmin
 from django.urls import path, re_path, include
 from blog.views import (
     IndexView, CategoryView, TagView,
@@ -36,8 +37,13 @@ from blog.apis import ArticleViewSet
 router = DefaultRouter()
 router.register(r"article", ArticleViewSet, base_name="api-article")
 
+from django.conf import settings
+from django.conf.urls import url, include
+from django.conf.urls.static import static
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),  # 可以同时使用admin和xadmin，根据url区分
+    path('xadmin/', xadmin.site.urls),
 
     re_path(r"^$", IndexView.as_view(), name="index"),
     re_path(r"^category/(?P<category_id>\d+)/$", CategoryView.as_view(), name="category-list"),
@@ -54,11 +60,14 @@ urlpatterns = [
     re_path(r"logout/$", LogoutView.as_view(), name="logout"),
     re_path(r"userinfo/$", UserInfoView.as_view(), name="userinfo"),
 
+    # 富文本编辑器
+    # re_path(r'^ueditor/',include('DjangoUeditor.urls' ))
+    re_path(r"^ckeditor/", include("ckeditor_uploader.urls")),  # 配置文件接收接口
 
     # re_path(r"^api/article/", article_list, name="article-list"),
     # re_path(r"^api/article/", ArticleList.as_view(), name="article-list")
     # re_path(r"^api/", include(router.urls, namespace="api")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 内置静态文件处理功能，正是版由Nginx取代
 
 
 

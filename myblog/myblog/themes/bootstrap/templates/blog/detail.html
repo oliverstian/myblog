@@ -162,7 +162,12 @@
             <!-- 目录部分 -->
             <div class="col-lg-3">
                 <div class="article-toc f-18">
+                    {% if article.content_toc %}
                     {{ article.content_toc|safe }}
+                    {% else %}
+                    <div class="" style="line-height: 30px;padding-top: 30px;color: #007bff;">本文档没有目录</div>
+                    {% endif %}
+
                 </div>
             </div>
         </div>
