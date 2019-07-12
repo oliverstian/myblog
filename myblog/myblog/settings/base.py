@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # "DjangoUeditor",
     "ckeditor",
     "ckeditor_uploader",  # 上传图片用
+    "imagekit",
 ]
 
 MIDDLEWARE = [
@@ -124,33 +125,31 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
 THEME = 'bootstrap'
 STATIC_ROOT = '/tmp/static'
-
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "myblog", "themes", THEME, "static")
 ]
 
+MEDIA_URL = "/media/"  # 对比STATIC_URL和STATIC_ROOT
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")  # 绝对路径，里面存放文件
+
+DEFAULT_FILE_STORAGE = 'myblog.storage.WatermarkStorage'  # 文件存储引擎
+
 # ckeditor配置项
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': 800,
+        'toolbar': 'full',  # 工具条功能
+        'height': 300,  # 编辑器高度
+        'width': 800,  # 编辑器宽度
         'tabSpaces': 4,
         'extraPlugins': 'codesnippet',
     },
 }
+CKEDITOR_UPLOAD_PATH = "article_images"  # MEDIA_ROOT下的这个文件夹下
+CKEDITOR_BROWSE_SHOW_DIRS = True  # 好像没什么卵用,加个吧
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-CKEDITOR_UPLOAD_PATH = "article_images"
-
-DEFAULT_FILE_STORAGE = 'myblog.storage.WatermarkStorage'  # 文件存储引擎
 
 
 

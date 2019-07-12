@@ -1,5 +1,6 @@
 {% extends "./base.html" %}
 {% load static comment_block %}
+{% load avatar %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/list.css' %}">
@@ -32,15 +33,16 @@
                             <div class="col-xl-4">
                                 <div class="card-body px-3 py-3">
                                     <h6 class="card-title border-bottom border-success font-weight-bold lh-25-oli">
-                                        <a href="#" class="card-link">【推荐】{{ hot_articles.1.title }}框架是个开机后季卡三极管</a>
+                                        <a href="#" class="card-link">【推荐】{{ hot_articles.0.title }}</a>
                                     </h6>
                                     <div class="text-muted mb-1 d-none d-sm-block">{{ hot_articles.1.desc }}可以时不时跟换看世界观南汉山城开心呢女合并卡寄过来那家伙就考虑到桑看了三年个...</div>
                                     <a href="#" class="btn btn-secondary btn-sm mb-3 d-none d-sm-inline-block" role="button" aria-pressed="true">详情...</a>
                                     <div class="overflow-hidden">
-                                        <img src="{% static 'imgs/github.png' %}" class="w-20-oli mw-35-oli float-left">
+{#                                        <img src="{% static 'imgs/github.png' %}" class="w-20-oli mw-35-oli float-left">#}
+                                        {% user_avatar hot_articles.0.owner "w-20-oli mw-35-oli float-left" %}
                                         <div class="float-left pl-2 w-80-oli text-muted f-12">
-                                            <div class="text-truncate">作者：<a href="/" title="{{ hot_articles.1.owner }}">{{ hot_articles.1.owner }}看看这个名字能写多长，再长一点</a></div>
-                                            <div>时间：{{ hot_articles.1.time_short_format }}</div>
+                                            <div class="text-truncate">作者：<a href="/" title="{{ hot_articles.0.owner }}">{{ hot_articles.0.owner }}</a></div>
+                                            <div>时间：{{ hot_articles.0.time_short_format }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -84,7 +86,8 @@
                                 <p class="text-muted d-none d-sm-block mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
                                 <p class="text-muted d-block d-sm-none mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
                                 <div class="lh-20-oli text-muted">
-                                    <img class="d-inline-block" style="width: 20px" src="{% static 'imgs/github.png' %}" alt="">
+{#                                    <img class="d-inline-block" style="width: 20px" src="{% static 'imgs/github.png' %}" alt="">#}
+                                    {% user_avatar article.owner "d-inline-block" "width: 20px" %}
                                     <a href="{% url 'author' article.owner.id  %}">{{ article.owner }}</a>
                                     <span class="pl-3 d-none d-lg-inline"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ article.time_short_format }}</span>
                                     <span class="pl-3"><i class="fa fa-eye" aria-hidden="true"></i> 阅读({{ article.pv }})</span>

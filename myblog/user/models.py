@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
 
 
 class BaseModel(models.Model):
@@ -13,10 +15,38 @@ class BaseModel(models.Model):
 
 
 class User(AbstractUser, BaseModel):
-    """用户模型类"""
+    """
+    注意：由于xadmin是pip安装的，所以后面部署时源码会重新下载，到时需要把xadmin/plugins/auth.py
+    替换掉新下载的，因为auth.UserAdmin改动了源码
+    """
+    website = models.URLField(verbose_name="个人网址", blank=True, null=True, help_text="必须以http(s)开头的完整形式")
+    avatar = ProcessedImageField(upload_to='avatar/%Y/%m/%d',
+                                 default='avatar/default.png',
+                                 verbose_name='头像',
+                                 format='PNG',  # 转换格式
+                                 options={'quality': 60},
+                                 processors=[ResizeToFill(80, 80)]
+                                 )  # 把头像按配置修改后保存到media_root/avatar下，同时把图片路径保存到数据库
 
     class Meta:
         db_table = 'df_user'
-        verbose_name = '用户'
+        verbose_name = '用户信息'
         verbose_name_plural = verbose_name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

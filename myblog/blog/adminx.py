@@ -124,7 +124,7 @@ class ArticleAdmin(BaseOwnerXadmin):  # 这玩意是个元类（用来创建类�
         把这个函数名放在list_display里面，会新增一个字段显示这个函数的返回值,但是这个函数
         不能放在list_display_links中
         """
-        return format_html(
+        return format_html(  # 相比于 mark_safe()，官网更推荐format_html这种方式https://docs.djangoproject.com/en/2.2/howto/custom-template-tags/#howto-writing-custom-template-tags（simple tags那里）
             '<a href="{}">编辑</a>',
             reverse('xadmin:blog_article_change', args=(obj.id, ))
         )

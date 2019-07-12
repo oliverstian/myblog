@@ -28,6 +28,9 @@ class Comment(models.Model):
 class ArticleComment(Comment):
     belong = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='article_comments', verbose_name='所属文章')
 
+    def __str__(self):
+        return self.author.username
+
     class Meta:
         verbose_name = '文章评论'
         verbose_name_plural = verbose_name

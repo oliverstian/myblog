@@ -6,13 +6,19 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image, ImageDraw, ImageFont
 
 
-class WatermarkStorage(FileSystemStorage):
+class WatermarkStorage(FileSystemStorage):  # FileSystemStorage实现了基本的本地文件存储
     def save(self, name, content, max_length=None):
+        """
+        上传文件的时候执行，比如CKeditor中需要用到某张图片时，需要先选中本地图片，
+        然后上传到django服务器，再能插入文中使用。这个上传图片的过程就需要执行save。
+        content指的就是上传的那个文件，content_type就是文件类型加后缀
+        """
         # 处理逻辑
-        if 'image' in content.content_type:
-            # 加水印
-            image = self.watermark_with_text(content, 'olivertian.com', 'red')
-            content = self.convert_image_to_file(image, name)
+        if hasattr(content, "content_type"):  # 上传头像时没有content_type属性
+            if 'image' in content.content_type:
+                # 加水印
+                image = self.watermark_with_text(content, 'olivertian.com', 'red')
+                content = self.convert_image_to_file(image, name)
 
         return super().save(name, content, max_length=max_length)
 

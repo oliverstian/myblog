@@ -1,4 +1,5 @@
 {% load static %}
+{% load avatar %}
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
@@ -24,21 +25,21 @@
     </head>
     <body>
         <!-- 导航条开始 -->
-        <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top py-0">  <!-- bg白 -->
+        <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top py-0 border-bottom">  <!-- bg白 -->
             <div class="container f-18">
                 <a class="navbar-brand" href="/"><i id="logo-oliver">Blog of OliverTian</i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse py-2" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/">首页</a>
+                            <a class="nav-link py-md-3" href="/">首页</a>
                         </li>
                     {% for cate in nav_category %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
+                            <a class="nav-link py-md-3" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
                         </li>
                     {% endfor %}
                     </ul>
@@ -51,8 +52,9 @@
                     {% if user.is_authenticated %}
                     <ul class="navbar-nav mr-sm-0">  <!-- mr-sm-0表示margin right 0px -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{{ user.username }}，欢迎回来！">
-                                <img class="avatar rounded-circle" src="{% static 'imgs/default.png' %}" alt="{{ user.username }}" style="max-width: 35px">
+                            <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{{ user.username }}，欢迎回来！">
+{#                                <img class="avatar rounded-circle" src="{{ user.avatar.url }}" alt="{{ user.username }}" style="max-width: 35px">#}
+                                {% user_avatar user "avatar rounded-circle" "max-width: 35px" %}
                             </a>
                             <div class="dropdown-menu pt-0 my-0" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'userinfo' %}">个人信息</a>

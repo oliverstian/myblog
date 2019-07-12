@@ -101,6 +101,9 @@ class Article(models.Model):
         verbose_name = verbose_name_plural = "文章"
         ordering = ["-id"]  # 根据id进行降序排列
 
+    def __str__(self):
+        return self.title
+
     def save(self, *args, **kwargs):
         """
         保存两份的好处是，博客写操作往往只有很少次（写、改），而读有很多次，如果数据库中保存的

@@ -1,5 +1,6 @@
 {% extends "./base.html" %}
 {% load static comment_block %}
+{% load avatar %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
@@ -87,7 +88,8 @@
                         <ul class="list-unstyled mt-2">
                             {% for comment in comments %}
                             <li class="media border-top pt-2">
-                                <img src="{% static 'imgs/default.png' %}" class="mr-3" alt="..." style="width: 40px">
+{#                                <img src="{% static 'imgs/default.png' %}" class="mr-3" alt="..." style="width: 40px">#}
+                                {% user_avatar comment.author "mr-3 rounded-circle" "width: 40px" %}
                                 <div class="media-body d-block">
                                     <div class="overflow-hidden">
                                         <button class="float-right text-muted rep-btn" data-repid="{{ comment.id }}" data-repuser="{{ comment.author }}">回复</button>
@@ -120,7 +122,8 @@
                                 <ul class="list-unstyled ml-5">
                                 {% for child_comment in child_comments %}
                                     <li class="media border-top-shallow pt-2">
-                                        <img src="{% static 'imgs/default.png' %}" class="mr-3" alt="..." style="width: 40px">
+{#                                        <img src="{% static 'imgs/default.png' %}" class="mr-3" alt="..." style="width: 40px">#}
+                                        {% user_avatar child_comment.author "mr-3 rounded-circle" "width: 40px" %}
                                         <div class="media-body d-block">
                                             <div class="overflow-hidden">
                                                 <button class="float-right text-muted rep-btn" data-repid="{{ child_comment.id }}" data-repuser="{{ child_comment.author }}">回复</button>
@@ -167,7 +170,6 @@
                     {% else %}
                     <div class="" style="line-height: 30px;padding-top: 30px;color: #007bff;">本文档没有目录</div>
                     {% endif %}
-
                 </div>
             </div>
         </div>
