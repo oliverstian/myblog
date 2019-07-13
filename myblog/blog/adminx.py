@@ -115,6 +115,7 @@ class ArticleAdmin(BaseOwnerXadmin):  # 这玩意是个元类（用来创建类�
             'content_ck',
             'content_md',
             'content',
+            "article_pic",
         )
 
     )

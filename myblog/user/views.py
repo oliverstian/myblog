@@ -7,6 +7,7 @@ from myblog.settings import base
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
+from .forms import UserForm
 
 
 class RegisterView(View):
@@ -88,3 +89,33 @@ class LogoutView(View):
 class UserInfoView(View):
     def get(self, request):
         return render(request, "user/userinfo.html")
+
+
+class ChangeInfo(View):
+    def get(self, request):
+        """
+        instance可以绑定原始数据到form（图片字段不会展示，只会展示网站），如果要把原始图片也绑定到表单
+        则需要指定一个第二参数，用SimpleUploadedFile把图片转换一下，参考官网：
+        https://docs.djangoproject.com/en/2.2/ref/forms/api/#binding-uploaded-files
+        """
+        form = UserForm(instance=request.user)
+        return render(request, "user/change_userinfo.html", {"forms": form})
+
+    def post(self, request):
+        """
+        上传的图片是作为文件保存在request.FILES中，其余表单数据保存在request.POST。
+        官网意思是ImageField需要比普通Filed多绑定文件数据，文件数据和表单数据是分开
+        处理的，所以实例化一个form时需要指定两个参数（即表单数据和文件数据）。
+        参考官网form基础使用那里：https://docs.djangoproject.com/en/2.2/topics/forms/#more-on-fields
+        """
+        form = UserForm(request.POST, request.FILES, instance=request.user)  # This is called “binding data to the form” (it is now a bound form)（官网form overview那里）
+        if form.is_valid():
+            form.save()
+            return redirect(reverse("userinfo"))  # 修改成功重定向到资料页
+        else:
+            content = {
+                "forms": form,
+                "msg": "操作失败，请正确填写！"
+            }
+            return render(request, "user/change_userinfo.html", content)
+

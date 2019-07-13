@@ -118,6 +118,16 @@ class ArticleDetailView(CommonViewMixin, DetailView):
     context_object_name = "article"
     pk_url_kwarg = "article_id"
 
+    def get_context_data(self, **kwargs):
+        context = super(ArticleDetailView, self).get_context_data()
+        next_article = self.queryset.filter(category_id=self.object.category_id, id__gt=self.kwargs[self.pk_url_kwarg]).order_by("id").first()
+        pre_article = self.queryset.filter(category_id=self.object.category_id, id__lt=self.kwargs[self.pk_url_kwarg]).order_by("id").first()
+        context.update({
+            "next_article": next_article,
+            "pre_article": pre_article,
+        })
+        return context
+
     def get(self, request, *args, **kwargs):
         response = super(ArticleDetailView, self).get(request, *args, **kwargs)
         self.handle_visited()

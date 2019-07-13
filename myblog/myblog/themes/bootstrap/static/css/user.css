@@ -1,0 +1,23 @@
+.more-manipulate span::before{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 38%;
+    height: 1px;
+    content: "";
+    background-color: #eee;
+}
+.more-manipulate span::after{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 38%;
+    height: 1px;
+    content: "";
+    background-color: #eee;
+}
+
+.more-manipulate span{
+    line-height: 20px;
+    font-size: 18px;
+}

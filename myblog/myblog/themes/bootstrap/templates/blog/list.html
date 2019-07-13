@@ -76,7 +76,7 @@
                             <div class="mr-3 align-self-center w-32-oli position-relative">
                                 <a class="btn btn-primary btn-sm position-absolute article-cate" href="#" role="button">{{ article.category.name }}</a>
                                 <a href="#" class="article-img" target="_blank">
-                                    <img src="{% static "/imgs/3.png" %}" class="w-100" alt="...">
+                                    <img src="{{ article.article_pic.url }}" class="w-100" alt="...">
                                 </a>
                             </div>
                             <div class="media-body w-65-oli">
@@ -147,7 +147,7 @@
                             <a href="{% url 'article-detail' hot_article.id %}" class="pl-0 pr-0 list-group-item">
                                 <div class="row no-gutters">
                                     <div class="col-lg-4 align-self-center">
-                                        <img class="card-img w-100" src="{% static 'imgs/1.png' %}">
+                                        <img class="card-img w-100" src="{{ hot_article.article_pic.url }}">
                                     </div>
                                     <div class="col-lg-8 pl-2">
                                         <h6 class="font-weight-bold f-14 lh-20-oli">{{ hot_article.title }}</h6>

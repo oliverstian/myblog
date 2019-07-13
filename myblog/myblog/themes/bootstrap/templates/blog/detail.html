@@ -18,8 +18,8 @@
             <div class="col-lg-9">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-white border-0 rounded-0 f-16">
-                        <li class="breadcrumb-item"><a href="#">首页</a></li>
-                        <li class="breadcrumb-item"><a href="#">{{ article.category.name }}</a></li>
+                        <li class="breadcrumb-item"><a href="/">首页</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'category-list' article.category.id %}">{{ article.category.name }}</a></li>
                         <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
                     </ol>
                 </nav>
@@ -30,7 +30,8 @@
                         <h4 class="font-weight-bold card-title text-center border-bottom my-0 py-4 detail-title">{{ article.title }}</h4>
                         <div class="text-center text-muted f-13 my-4">
                             <div class="d-inline">
-                                <img class="d-none d-md-inline" src="{% static 'imgs/github.png'%}" style="width: 25px" alt="">
+{#                                <img class="d-none d-md-inline" src="{% static 'imgs/github.png'%}" style="width: 25px" alt="">#}
+                                {% user_avatar article.owner "rounded-circle d-none d-md-inline" "width: 25px" %}
                                 <a href="#">{{ article.owner.username }}</a>
                             </div>
                             <span class="pl-md-4"><i class="fa fa-clock-o d-none d-md-inline" aria-hidden="true"></i> {{ article.time_short_format }}</span>
@@ -51,13 +52,21 @@
                             {% endfor %}
                         </div>
                         <ul class="prenext mt-4 f-18">
-                            <li class="">
+                            <li>
                                 <span>上一篇:</span>
-                                <a href="">蔡英文英文很菜</a>
+                                {% if pre_article %}
+                                <a href="{% url 'article-detail' pre_article.id %}">{{ pre_article.title }}</a>
+                                {% else %}
+                                <a href="/">没有更多同类博文，逛逛首页吧！</a>
+                                {% endif %}
                             </li>
                             <li>
                                 <span>下一篇:</span>
-                                <a href="">没什么好写的</a>
+                                {% if next_article %}
+                                <a href="{% url 'article-detail' next_article.id %}">{{ next_article.title }}</a>
+                                {% else %}
+                                <a href="/">没有更多同类博文，逛逛首页吧！</a>
+                                {% endif %}
                             </li>
                         </ul>
                         {% endif %}

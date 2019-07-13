@@ -28,7 +28,7 @@ from comment.views import (
 )
 from user.views import (
     RegisterView, LoginView, LogoutView,
-    UserInfoView,
+    UserInfoView, ChangeInfo,
 )
 # from blog.apis import article_list, ArticleList
 from rest_framework.routers import DefaultRouter
@@ -53,12 +53,13 @@ urlpatterns = [
     re_path(r"^search/$", SearchView.as_view(), name="search"),
     re_path(r"^author/(?P<owner_id>\d+)/$", AuthorView.as_view(), name="author"),
     re_path(r"^links/$", LinkListView.as_view(), name="links"),
-    re_path(r"comment/$", add_comment_view, name="add_comment"),
+    re_path(r"^comment/$", add_comment_view, name="add_comment"),
 
-    re_path(r"register/$", RegisterView.as_view(), name="register"),
-    re_path(r"login/$", LoginView.as_view(), name="login"),
-    re_path(r"logout/$", LogoutView.as_view(), name="logout"),
-    re_path(r"userinfo/$", UserInfoView.as_view(), name="userinfo"),
+    re_path(r"^register/$", RegisterView.as_view(), name="register"),
+    re_path(r"^login/$", LoginView.as_view(), name="login"),
+    re_path(r"^logout/$", LogoutView.as_view(), name="logout"),
+    re_path(r"^userinfo/$", UserInfoView.as_view(), name="userinfo"),
+    re_path(r"^userinfo/change/$", ChangeInfo.as_view(), name="change_info"),
 
     # 富文本编辑器
     # re_path(r'^ueditor/',include('DjangoUeditor.urls' ))

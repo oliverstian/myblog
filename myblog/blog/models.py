@@ -3,6 +3,8 @@ import markdown
 
 from django.db import models
 from django.contrib.auth.models import User
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
 
 
 class Category(models.Model):
@@ -93,7 +95,13 @@ class Article(models.Model):
     tag = models.ManyToManyField(Tag, verbose_name="标签")
     owner = models.ForeignKey("user.User", on_delete=models.CASCADE, verbose_name="作者")
     created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
-
+    article_pic = ProcessedImageField(upload_to='article_pic/%Y/%m/%d',
+                                      default="article_pic/default.png",
+                                      verbose_name='文章配图',
+                                      format='PNG',  # 转换格式
+                                      options={'quality': 60},
+                                      processors=[ResizeToFill(600, 300)]
+                                      )
     pv = models.PositiveIntegerField(default=1)
     uv = models.PositiveIntegerField(default=1)
 
