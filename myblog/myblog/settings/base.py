@@ -150,7 +150,16 @@ CKEDITOR_CONFIGS = {
 CKEDITOR_UPLOAD_PATH = "article_images"  # MEDIA_ROOT下的这个文件夹下
 CKEDITOR_BROWSE_SHOW_DIRS = True  # 好像没什么卵用,加个吧
 
-
+# 配置缓存使用redis
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:181855@makesi@134.175.30.49:6379/3",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 
 
