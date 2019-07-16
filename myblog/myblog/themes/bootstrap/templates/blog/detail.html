@@ -20,15 +20,15 @@
                     <ol class="breadcrumb bg-white border-0 rounded-0 f-16">
                         <li class="breadcrumb-item"><a href="/">首页</a></li>
                         <li class="breadcrumb-item"><a href="{% url 'category-list' article.category.id %}">{{ article.category.name }}</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
+                        <li class="d-none d-md-block breadcrumb-item active" aria-current="page">{{ article.title }}</li>  <!--手机端不显示-->
                     </ol>
                 </nav>
 
                 <div class="card w-100 mb-2">
                     <div class="card-body">
                         {% if article %}
-                        <h4 class="font-weight-bold card-title text-center border-bottom my-0 py-4 detail-title">{{ article.title }}</h4>
-                        <div class="text-center text-muted f-13 my-4">
+                        <h4 class="font-weight-bold card-title text-center border-bottom my-0 py-3 detail-title">{{ article.title }}</h4>
+                        <div class="text-center text-muted f-13 my-3">
                             <div class="d-inline">
 {#                                <img class="d-none d-md-inline" src="{% static 'imgs/github.png'%}" style="width: 25px" alt="">#}
                                 {% user_avatar article.owner "rounded-circle d-none d-md-inline" "width: 25px" %}

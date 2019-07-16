@@ -46,7 +46,9 @@ a{
 .f-12{
     font-size: 12px !important;
 }
-
+.lh-18-oli {
+    line-height: 18px !important;
+}
 .lh-20-oli {
     line-height: 20px !important;
 }

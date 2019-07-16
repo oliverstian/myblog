@@ -82,14 +82,14 @@ class ArticleAdmin(BaseOwnerXadmin):  # 这玩意是个元类（用来创建类�
     form = ArticleAdminForm
     list_display = [  # 显示的字段
         "title", "category", "status",
-        "created_time", "operator"
+        "created_time", "is_top", "operator",
     ]
 
     list_display_links = ["title", "category"]  # 默认每一行只允许第一个字段可点击进入编辑数据行，在这里添加可点击编辑数据行的字段
-    list_filter = ["category", "tag"]  # 侧栏（admin）或导航栏(xadmin)中过滤器使用的字段
+    list_filter = ["category", "tag", "is_top"]  # 侧栏（admin）或导航栏(xadmin)中过滤器使用的字段
     search_fields = ["title", "category__name"]  # 输入关键字，用关键字在这些字段中去匹配。多个字段间是或的关系
     list_editable = ["title"]  # 可直接在列表中修改的字段，注意这里指单独修改数据行中的某个字段
-    ordering = ["created_time"]  # 排序
+    ordering = ["is_top", "created_time"]  # 排序
     filter_horizontal = ("tag", )  # 多对多关系，实现一个水平的选择框
 
     # actions_on_top = True
@@ -105,7 +105,7 @@ class ArticleAdmin(BaseOwnerXadmin):  # 这玩意是个元类（用来创建类�
         Fieldset(  # 一个fieldset相当于一个独立排版的模块
             '基础信息',
             Row("title", "category"),  # 排版在同一行
-            'status',
+            Row('status', "is_top"),
             'tag',
         ),
         Fieldset(

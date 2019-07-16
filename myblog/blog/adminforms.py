@@ -27,7 +27,7 @@ class ArticleAdminForm(forms.ModelForm):
     class Meta:
         model = Article  # 指定该form对应哪个model，如果不覆盖上面的字段，那将使用默认的字段设置（model映射到form有默认字段映射关系）
         fields = (
-            'category', 'tag', 'desc', 'title', "article_pic",
+            'category', 'tag', "is_top", 'desc', 'title', "article_pic",
             'is_md', 'content', 'content_md', 'content_ck',
             'status'
         )

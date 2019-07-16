@@ -74,6 +74,17 @@ class Tag(models.Model):
 
 
 class Article(models.Model):
+    WEIGHT_POST = 0
+    WEIGHT_TOP_NORMAL = 1
+    WEIGHT_TOP_IGNORE = 2
+    WEIGHT_NORMAL = 3
+    WEIGHT_ITEM = {  # 为了样式好看，置顶栏放了三个置顶文章，但是为了支持响应式，有一个在移动端会隐藏
+        (WEIGHT_POST, "海报栏"),
+        (WEIGHT_TOP_NORMAL, "凑数置顶栏"),  # 移动端忽略的文章，最好固定一篇就不要动了
+        (WEIGHT_TOP_IGNORE, "置顶栏"),
+        (WEIGHT_NORMAL, "普通栏"),
+    }
+
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
     STATUS_DRAFT = 2
@@ -91,6 +102,8 @@ class Article(models.Model):
     content_toc = models.TextField(verbose_name="文章目录", null=True, blank=True, editable=False)
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
                                          choices=STATUS_ITEM, verbose_name="状态")
+    is_top = models.PositiveIntegerField(default=WEIGHT_NORMAL,
+                                         choices=WEIGHT_ITEM, verbose_name="置顶")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="分类")
     tag = models.ManyToManyField(Tag, verbose_name="标签")
     owner = models.ForeignKey("user.User", on_delete=models.CASCADE, verbose_name="作者")
@@ -107,7 +120,7 @@ class Article(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = "文章"
-        ordering = ["-id"]  # 根据id进行降序排列
+        ordering = ["is_top", "-id"]  # 根据id进行降序排列
 
     def __str__(self):
         return self.title

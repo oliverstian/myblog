@@ -24,25 +24,25 @@
             <div class="row">
                 <!-- 内容主体部分 -->
                 <div class="col-md-8 pr-0">
+
                     <!-- 顶部海报栏 -->
                     <div class="card mb-2" id="top-post">
                         <div class="row no-gutters">
                             <div class="col-xl-8">
-                                <a href="#"><img src="{% static 'imgs/2.png' %}" class="card-img" alt="..."></a>
+                                <a href="{% url 'article-detail' article_ls.0.id %}" target="_blank"><img src="{{ article_ls.0.article_pic.url }}" class="card-img" alt="..."></a>
                             </div>
                             <div class="col-xl-4">
                                 <div class="card-body px-3 py-3">
                                     <h6 class="card-title border-bottom border-success font-weight-bold lh-25-oli">
-                                        <a href="#" class="card-link">【推荐】{{ hot_articles.0.title }}</a>
+                                        <a href="{% url 'article-detail' article_ls.0.id %}" target="_blank" class="card-link">{{ article_ls.0.title }}</a>
                                     </h6>
-                                    <div class="text-muted mb-1 d-none d-sm-block">{{ hot_articles.1.desc }}可以时不时跟换看世界观南汉山城开心呢女合并卡寄过来那家伙就考虑到桑看了三年个...</div>
-                                    <a href="#" class="btn btn-secondary btn-sm mb-3 d-none d-sm-inline-block" role="button" aria-pressed="true">详情...</a>
+                                    <div class="text-muted mb-1 d-none d-sm-block">{{ article_ls.0.desc|truncatechars:55 }}...</div>
+                                    <a href="{% url 'article-detail' article_ls.0.id %}" target="_blank" class="btn btn-secondary btn-sm mb-3 d-none d-sm-inline-block" role="button" aria-pressed="true">详情...</a>
                                     <div class="overflow-hidden">
-{#                                        <img src="{% static 'imgs/github.png' %}" class="w-20-oli mw-35-oli float-left">#}
-                                        {% user_avatar hot_articles.0.owner "w-20-oli mw-35-oli float-left" %}
+                                        {% user_avatar article_ls.0.owner "w-20-oli mw-35-oli float-left" %}
                                         <div class="float-left pl-2 w-80-oli text-muted f-12">
-                                            <div class="text-truncate">作者：<a href="/" title="{{ hot_articles.0.owner }}">{{ hot_articles.0.owner }}</a></div>
-                                            <div>时间：{{ hot_articles.0.time_short_format }}</div>
+                                            <div class="text-truncate">作者：<a href="/" title="{{ article_ls.0.owner }}">{{ article_ls.0.owner }}</a></div>
+                                            <div>时间：{{ article_ls.0.time_short_format }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -50,30 +50,29 @@
                         </div>
                     </div>
 
+
                     <!-- 置顶文章部分 -->
                     <div class="row mx-0 mb-4 ml-n2" id="top-articles">
+                        {% for article in article_ls|slice:"1:4" %}
+                        {% if forloop.last %}  <!--放置凑数的那篇置顶文章-->
+                        <div class="col px-0 ml-2 d-none d-lg-block position-relative overflow-hidden">
+                            <img src="{{ article.article_pic.url }}" class="w-100" alt="">
+                            <a href="" class="d-inline-block position-absolute">{{ article.title }}</a>
+                        </div>
+                        {% else %}
                         <div class="col px-0 ml-2 position-relative overflow-hidden">
-                            <img src="{% static "/imgs/3.png" %}" class="w-100" alt="">
-                            <img src="{% static "/imgs/TOP.png" %}" class="position-absolute top-pic" alt="">
-                            <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历看看在哪里</a>
+                            <img src="{{ article.article_pic.url }}" class="w-100" alt="">
+                            <a href="" class="d-inline-block position-absolute">{{ article.title }}</a>
                         </div>
-                        <div class="col px-0 ml-2 position-relative overflow-hidden">
-                            <img src="{% static "/imgs/1.png" %}" class="w-100" alt="">
-                            <img src="{% static "/imgs/TOP.png" %}" class="position-absolute top-pic" alt="">
-                            <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历</a>
-                        </div>
-                        <div class="col px-0 ml-2 d-none d-sm-block position-relative overflow-hidden">
-                            <img src="{% static "/imgs/3.png" %}" class="w-100" alt="">
-                            <img src="{% static "/imgs/TOP.png" %}" class="position-absolute top-pic" alt="">
-                            <a href="" class="d-inline-block position-absolute">看看在哪里，分享一下我的工作经历</a>
-                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
 
                     <!-- 正文列表部分 -->
-                    {% for article in article_ls %}
+                    {% for article in article_ls|slice:"4:" %}
                     <ul class="list-unstyled" id="main-articles">
                         <li class="media my-3 bg-white py-3 px-3">
-                            <div class="mr-3 align-self-center w-32-oli position-relative">
+                            <div class="d-none d-sm-block mr-3 align-self-center w-32-oli position-relative"> <!--手机不显示配图-->
                                 <a class="btn btn-primary btn-sm position-absolute article-cate" href="#" role="button">{{ article.category.name }}</a>
                                 <a href="#" class="article-img" target="_blank">
                                     <img src="{{ article.article_pic.url }}" class="w-100" alt="...">
@@ -83,12 +82,12 @@
                                 <h6 class="mt-0 mb-2 border-bottom font-weight-bold text-truncate lh-30-oli">
                                     <a href="{% url 'article-detail' article.id %}" target="_blank" class="text-decoration-none" title="{{ article.title }}">{{ article.title }}</a>
                                 </h6>
-                                <p class="text-muted d-none d-sm-block mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
-                                <p class="text-muted d-block d-sm-none mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc }}</p>
+                                <p class="text-muted d-none d-lg-block mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc|truncatechars:65 }}...</p>
+                                <p class="text-muted d-block d-lg-none mb-2 f-15 lh-20-oli mh-60-oli overflow-hidden">{{ article.desc|truncatechars:35 }}...</p>
                                 <div class="lh-20-oli text-muted">
-{#                                    <img class="d-inline-block" style="width: 20px" src="{% static 'imgs/github.png' %}" alt="">#}
                                     {% user_avatar article.owner "d-inline-block" "width: 20px" %}
                                     <a href="{% url 'author' article.owner.id  %}">{{ article.owner }}</a>
+                                    <a href="{% url 'category-list' article.category.id %}" class="pl-3 d-inline d-md-none"><i class="fa fa-map-signs" aria-hidden="true"></i> {{ article.category.name }}</a>  <!--仅手机显示-->
                                     <span class="pl-3 d-none d-lg-inline"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ article.time_short_format }}</span>
                                     <span class="pl-3"><i class="fa fa-eye" aria-hidden="true"></i> 阅读({{ article.pv }})</span>
                                     <span class="pl-3 d-none d-md-inline"><i class="fa fa-comment" aria-hidden="true"></i> 评论({% total_comment_num article %})</span>
@@ -144,13 +143,13 @@
                         </div>
                         <div class="list-group list-group-flush">
                             {% for hot_article in hot_articles %}
-                            <a href="{% url 'article-detail' hot_article.id %}" class="pl-0 pr-0 list-group-item">
+                            <a href="{% url 'article-detail' hot_article.id %}" class="px-0 py-2 list-group-item">
                                 <div class="row no-gutters">
                                     <div class="col-lg-4 align-self-center">
                                         <img class="card-img w-100" src="{{ hot_article.article_pic.url }}">
                                     </div>
                                     <div class="col-lg-8 pl-2">
-                                        <h6 class="font-weight-bold f-14 lh-20-oli">{{ hot_article.title }}</h6>
+                                        <h6 class="font-weight-bold f-14 lh-18-oli mb-1">{{ hot_article.title }}</h6>
                                         <span class="text-muted mr-2">{{ hot_article.time_short_format }}</span>
                                         <span class="text-muted">阅读({{ hot_article.pv }})</span>
                                     </div>
