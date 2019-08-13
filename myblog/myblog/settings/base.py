@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(BASE_DIR)  # 改为basedir为项目目录（即外层
 SECRET_KEY = '0z-3ab$+*k69e_nl&-pzewjj*cc)eq!whx)vxoj5eed34gz5yv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -126,7 +126,7 @@ USE_TZ = True
 
 
 THEME = 'bootstrap'
-STATIC_ROOT = '/tmp/static'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "myblog", "themes", THEME, "static")

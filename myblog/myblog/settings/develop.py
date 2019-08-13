@@ -1,7 +1,7 @@
 from myblog.settings.base import *  # NOQA 告诉pep8工具此处不需要检测
 
 
-DEBUG = True
+# DEBUG = True
 
 DATABASES = {
     'default': {
