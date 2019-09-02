@@ -10,6 +10,13 @@
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
+<style>
+    #content_detail p{
+        font-size: 15px;
+        line-height: 24px;
+    }
+</style>
+
 {% endblock %}
 
 {% block main %}
@@ -38,12 +45,10 @@
                             <span class="pl-md-4"><i class="fa fa-eye d-none d-md-inline" aria-hidden="true"></i> 阅读({{ article.pv }})</span>
                             <span class="pl-md-4"><i class="fa fa-comment d-none d-md-inline" aria-hidden="true"></i> 评论({% total_comment_num article %})</span>
                         </div>
-                        <div>
-                            <p>
-                                {% autoescape off %}
-                                {{ article.content_html }} <!-- 编辑文章用Markdown格式，展示用HTML格式 -->
-                                {% endautoescape %}
-                            </p>
+                        <div id="content_detail">
+                            {% autoescape off %}
+                            {{ article.content_html }} <!-- 编辑文章用Markdown格式，展示用HTML格式 -->
+                            {% endautoescape %}
                         </div>
                         <div class="tag-cloud mt-3">
                             <span class="tag-text">标签：</span>

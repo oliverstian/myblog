@@ -57,12 +57,12 @@
                         {% if forloop.last %}  <!--放置凑数的那篇置顶文章-->
                         <div class="col px-0 ml-2 d-none d-lg-block position-relative overflow-hidden">
                             <img src="{{ article.article_pic.url }}" class="w-100" alt="">
-                            <a href="" class="d-inline-block position-absolute">{{ article.title }}</a>
+                            <a href="{% url 'article-detail' article.id %}" class="d-inline-block position-absolute" target="_blank">{{ article.title }}</a>
                         </div>
                         {% else %}
                         <div class="col px-0 ml-2 position-relative overflow-hidden">
                             <img src="{{ article.article_pic.url }}" class="w-100" alt="">
-                            <a href="" class="d-inline-block position-absolute">{{ article.title }}</a>
+                            <a href="{% url 'article-detail' article.id %}" class="d-inline-block position-absolute" target="_blank">{{ article.title }}</a>
                         </div>
                         {% endif %}
                         {% endfor %}

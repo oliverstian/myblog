@@ -113,7 +113,8 @@ class Article(models.Model):
                                       verbose_name='文章配图',
                                       format='PNG',  # 转换格式
                                       options={'quality': 60},
-                                      processors=[ResizeToFill(600, 300)]
+                                      processors=[ResizeToFill(600, 300)],
+                                      blank=True  # 后台修改时，可以为空，也就是说不改
                                       )
     pv = models.PositiveIntegerField(default=1)
     uv = models.PositiveIntegerField(default=1)
